@@ -1,0 +1,6 @@
+[submodule "agentlab"]
+	path = agentlab
+	url = https://github.com/ServiceNow/AgentLab.git
+[submodule "browsergym"]
+	path = browsergym
+	url = https://github.com/ServiceNow/BrowserGym.git
