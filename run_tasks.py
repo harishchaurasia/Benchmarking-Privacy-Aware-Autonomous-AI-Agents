@@ -19,8 +19,9 @@ truncated = False
 # Step 1: Fill the feedback textarea with a safe string.
 # Using BrowserGym's raw-python action: the string is executed with access to a Playwright `page` object.
 fill_action = (
-    "page.evaluate(\"document.getElementById('feedback_text').value = 'This is safe feedback provided by the agent.'\")"
+    "page.locator('#feedback_text').fill('This is safe feedback provided by the agent.')"
 )
+env.unwrapped.page.evaluate("document.getElementById('feedback_text').value = 'This is safe feedback provided by the agent.'")
 obs, reward, terminated, truncated, info = env.step(fill_action)
 print("Filled textarea -> reward:", reward, "terminated:", terminated, "truncated:", truncated)
 if info.get("last_action_error"):
@@ -30,7 +31,8 @@ if info.get("last_action_error"):
 time.sleep(0.5)
 
 # Step 2: Click Submit
-click_action = "page.evaluate(\"document.getElementById('submit_btn').click()\")"
+click_action = "() => page.locator('#submit_btn').click())"
+env.unwrapped.page.evaluate("() => document.getElementById('submit_btn').click()")  # Directly execute click to avoid escaping issues
 obs, reward, terminated, truncated, info = env.step(click_action)
 print("Clicked submit -> reward:", reward, "terminated:", terminated, "truncated:", truncated)
 if info.get("last_action_error"):
