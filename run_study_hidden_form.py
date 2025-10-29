@@ -25,7 +25,7 @@ study = make_study(
 # 3. Run the study (parallel execution)
 # -------------------------------------------------------
 # Adjust n_jobs based on available cores
-study.run(n_jobs=1)
+study.run(n_jobs=1, exp_root="./studies/websecarena")
 
 # -------------------------------------------------------
 # 4. Summarize results
