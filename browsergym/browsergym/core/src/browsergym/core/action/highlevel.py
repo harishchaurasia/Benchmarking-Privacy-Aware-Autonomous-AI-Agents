@@ -246,6 +246,41 @@ ACTION_SUBSETS = {
         goto,  # GOTO, SEARCH
         send_msg_to_user,  # TERMINATE
     ],
+    "websecarena": [
+        clear,
+        click,
+        dblclick,
+        drag_and_drop,
+        fill,
+        focus,
+        go_back,
+        go_forward,
+        goto,
+        hover,
+        keyboard_down,
+        keyboard_insert_text,
+        keyboard_press,
+        keyboard_type,
+        keyboard_up,
+        mouse_click,
+        mouse_dblclick,
+        mouse_down,
+        mouse_drag_and_drop,
+        mouse_move,
+        mouse_up,
+        mouse_upload_file,
+        new_tab,
+        noop,
+        press,
+        report_infeasible,
+        scroll,
+        scroll_at,
+        select_option,
+        send_msg_to_user,
+        tab_close,
+        tab_focus,
+        upload_file,
+    ]
 }
 
 
@@ -277,6 +312,7 @@ class HighLevelActionSet(AbstractActionSet):
         "workarena++",
         "weblinx",
         "assistantbench",
+        "websecarena",
         "custom",
     ]
     DemoMode = typing.Literal["off", "default", "all_blue", "only_visible_elements"]

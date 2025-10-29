@@ -105,6 +105,13 @@ def make_env_args_list_from_fixed_seeds(
 
 def prepare_backend(backend: str):
     match backend:
+        case "websecarena":
+            # register environments
+            import browsergym.websecarena
+
+            # check setup
+            # browsergym.websecarena.environment_variables_precheck()
+
         case "miniwob":
             # register environments
             import browsergym.miniwob

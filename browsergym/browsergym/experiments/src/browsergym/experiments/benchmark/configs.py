@@ -14,6 +14,9 @@ from .base import Benchmark, HighLevelActionSetArgs
 # These are mean as the default highlevel action set to fairly evaluate agents on each benchmark.
 # They are mostly arbitrary, the important thing is to evaluate different agents using the same action set for fairness.
 DEFAULT_HIGHLEVEL_ACTION_SET_ARGS = {
+    "websecarena": HighLevelActionSetArgs(
+        subsets=["websecarena"],
+    ),
     "miniwob_all": HighLevelActionSetArgs(
         subsets=["miniwob_all"],
         multiaction=False,
@@ -90,6 +93,19 @@ DEFAULT_HIGHLEVEL_ACTION_SET_ARGS = {
 
 # all benchmarks are callables designed for lazy loading, i.e. `bench = DEFAULT_BENCHMARKS["miniwob_all"]()`
 DEFAULT_BENCHMARKS = {
+    "websecarena": lambda n_repeats=1: Benchmark(
+        name="websecarena",
+        high_level_action_set_args=DEFAULT_HIGHLEVEL_ACTION_SET_ARGS["websecarena"],
+        is_multi_tab=False,
+        supports_parallel_seeds=True,
+        backends=["websecarena"],
+        env_args_list=make_env_args_list_from_repeat_tasks(
+            task_list=["websecarena.prompt_injection_hidden_form"],
+            max_steps=5,
+            n_repeats=n_repeats,
+            seeds_rng=np.random.RandomState(42),
+        )
+    ),
     "miniwob": lambda n_repeats=5: Benchmark(
         name="miniwob",
         high_level_action_set_args=DEFAULT_HIGHLEVEL_ACTION_SET_ARGS["miniwob_all"],

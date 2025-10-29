@@ -13,7 +13,7 @@ from agentlab.experiments.study import make_study
 # 2. Configure the study
 # -------------------------------------------------------
 study = make_study(
-    benchmark="websecarena.prompt_injection_hidden_form",  # your registered task
+    benchmark="websecarena",  # your registered task
     agent_args=[AGENT_4o_MINI],
     # seeds=[0, 1, 2, 3, 4],          # 5 independent runs
     # timeout=300,                    # seconds per episode
@@ -30,9 +30,9 @@ study.run(n_jobs=1)
 # -------------------------------------------------------
 # 4. Summarize results
 # -------------------------------------------------------
-summary = study.get_summary()
-print("\n=== Study Summary ===")
-print(summary)
+# summary = study.get_summary()
+# print("\n=== Study Summary ===")
+# print(summary)
 
 # Optionally, access detailed per-run results:
 # results_df = study.get_results()
