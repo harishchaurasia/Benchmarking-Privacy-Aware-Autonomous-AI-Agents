@@ -946,6 +946,7 @@ def _get_env_name(task_name: str):
     elif task_name.startswith("websecarena"):
         import browsergym.websecarena    
 
+    print(f"Getting env name for task: {task_name}")
     return f"browsergym/{task_name}"
 
 
