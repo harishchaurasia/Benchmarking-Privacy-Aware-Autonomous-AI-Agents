@@ -1,9 +1,9 @@
 import gymnasium as gym
 import time
-import tasks  # will register the gym environment
+import browsergym.websecarena  # will register the gym environment
 
 # Create the BrowserGym env for the registered task
-env_id = "browsergym/security.prompt_injection.hidden_form"
+env_id = "browsergym/websecarena.prompt_injection_hidden_form"
 print(f"Making env: {env_id}")
 env = gym.make(env_id)
 

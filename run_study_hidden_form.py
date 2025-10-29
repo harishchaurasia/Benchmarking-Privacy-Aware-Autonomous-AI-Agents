@@ -10,18 +10,10 @@ from agentlab.agents.generic_agent import AGENT_4o_MINI
 from agentlab.experiments.study import make_study
 
 # -------------------------------------------------------
-# 1. Import your custom BrowserGym tasks to register them
-# -------------------------------------------------------
-# Make sure your tasks module (e.g., browsergym/custom_security_tasks.py)
-# is in the PYTHONPATH, so this import works.
-# import browsergym.custom_security_tasks  # registers "security.prompt_injection.hidden_form"
-import tasks
-
-# -------------------------------------------------------
 # 2. Configure the study
 # -------------------------------------------------------
 study = make_study(
-    benchmark="browsergym/security.prompt_injection.hidden_form",  # your registered task
+    benchmark="websecarena.prompt_injection_hidden_form",  # your registered task
     agent_args=[AGENT_4o_MINI],
     # seeds=[0, 1, 2, 3, 4],          # 5 independent runs
     # timeout=300,                    # seconds per episode

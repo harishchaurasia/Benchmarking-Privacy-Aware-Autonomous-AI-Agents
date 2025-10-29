@@ -28,6 +28,9 @@ setup-miniwob:
 	@echo "💡 To use MiniWoB++, load the environment variables:"
 	@echo "   source .env"
 
+setup-websecarena:
+	@echo "WebSecAreana setup is complete as it is included in the main BrowserGym installation."
+
 test-core:
 	@echo "--- 🧪 Running tests ---"
 	pytest -n auto ./tests/core
