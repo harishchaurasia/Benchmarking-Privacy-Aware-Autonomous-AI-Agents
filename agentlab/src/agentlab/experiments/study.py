@@ -319,6 +319,16 @@ class Study(AbstractStudy):
         relaunch_errors=True,
         exp_root=RESULTS_DIR,
     ):
+        """Execute all experiments in the current study, managing parallelization, reproducibility, and automatic relaunching of failed runs.
+
+        Args:
+            n_jobs (int, default=1): Number of parallel worker processes to use for executing experiments. Increasing this value accelerates execution when sufficient compute and network resources are available.
+            parallel_backend (str, default="ray"): Parallelization backend to use. Typically "ray" for distributed, multi-machine setups, or "joblib" for local multiprocessing.
+            strict_reproducibility (bool, default=False): If True, locks all environment variables, package versions, and random seeds for fully deterministic behavior. May slightly reduce performance.
+            n_relaunch (int, default=3): Maximum number of times to relaunch failed or incomplete experiments. Each relaunch reuses the saved state and re-executes only unfinished trials.
+            relaunch_errors (bool, default=True): Whether to include error cases when determining which experiments to relaunch. If False, only incomplete (not failed) experiments are retried.
+            exp_root (str, default=RESULTS_DIR): Root directory for saving experiment results, logs, and reproducibility metadata.
+        """
         self.set_reproducibility_info(
             strict_reproducibility=strict_reproducibility, comment=self.comment
         )
