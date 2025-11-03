@@ -229,6 +229,7 @@ CHAT_MODEL_ARGS_DICT = {
     # ---------------- OSS LLMs ----------------#
     "meta-llama/Meta-Llama-3-70B-Instruct": SelfHostedModelArgs(
         model_name="meta-llama/Meta-Llama-3-70B-Instruct",
+        model_url="meta-llama/Meta-Llama-3-70B-Instruct",
         max_total_tokens=8_192,
         max_input_tokens=8_192 - 512,
         max_new_tokens=512,
@@ -237,6 +238,7 @@ CHAT_MODEL_ARGS_DICT = {
     ),
     "meta-llama/Meta-Llama-3-8B-Instruct": SelfHostedModelArgs(
         model_name="meta-llama/Meta-Llama-3-8B-Instruct",
+        model_url="meta-llama/Meta-Llama-3-8B-Instruct",
         max_total_tokens=16_384,
         max_input_tokens=16_384 - 512,
         max_new_tokens=512,
