@@ -1,2 +1,8 @@
 environment
 .env
+environment
+.env
+*.mp4
+*.webm
+*.zip
+__pycache__/

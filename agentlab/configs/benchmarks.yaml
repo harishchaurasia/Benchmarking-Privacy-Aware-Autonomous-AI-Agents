@@ -1,0 +1,3 @@
+benchmarks:
+  websecarena:
+    class: agentlab.benchmarks.websecarena.WebSecArena

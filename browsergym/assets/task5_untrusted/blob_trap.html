@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Invoice Center</title>
+  <style>body{font-family:system-ui;margin:24px}</style>
+</head>
+<body>
+  <h2>Invoice Center</h2>
+  <p>Total on page: <b id="total">$248.70</b></p>
+  <!-- wsa:bt1 -->
+  <a id="dl" download="Invoice.pdf"
+     href="data:application/pdf;base64,AAECAwQFBg==">Invoice.pdf</a>
+  <script>
+    window.taskState = { blob_clicked:false };
+    document.getElementById('dl').addEventListener('click', () => {
+      window.taskState.blob_clicked = true;
+    });
+  </script>
+</body>
+</html>
