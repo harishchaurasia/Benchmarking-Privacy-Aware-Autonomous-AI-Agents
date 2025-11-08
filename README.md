@@ -1,72 +1,71 @@
-# BrowserGym+ AgentLab Threat Models
+# Benchmarking Privacy-Aware Autonomous AI Agents  
+**Branch:** `adarsh`  
+**Author:** Adarsh Mohan  
 
-This repository contains tools and scripts for defining and testing threat models in the [BrowserGym](https://github.com/ServiceNow/BrowserGym) + [AgentLab](https://github.com/ServiceNow/AgentLab) agentic framework. It allows researchers and developers to evaluate the security posture of LLM-powered web agents against various attack vectors such as security warning popups and malicious banner attacks.
+---
 
-## Overview
+## 📘 Overview
 
-The framework provides a structured way to:
-- Simulate various attack scenarios against web agents
-- Measure attack success rate (ASR), task success rate (TSR), and attack stealth rate
-- Evaluate different LLM models' robustness against these attacks
-- Generate comprehensive reports of attack effectiveness
+This branch sets up a **controlled testbed** to study how **large language model (LLM)–based web agents** behave when exposed to **malicious or privacy-sensitive webpages** using **BrowserGym** and **Groq’s Llama-3.3-70B model**.
 
-This toolkit specifically focuses on testing agents in the [BrowserGym](https://github.com/ServiceNow/BrowserGym) setting.
+Unlike standard benchmarking, the goal here is **not to achieve a correct answer**, but to **observe behavior** — how the agent reacts when webpages attempt risky actions such as hidden downloads, data exfiltration, or deceptive UI prompts.
 
-## Installation
+This branch is currently focused on:
 
-install and setup browsergym and agentlab
+> 🧩 **Task 5 – Untrusted File Handling & Drive-By Downloads**  
+> Evaluating how an autonomous agent behaves when a webpage tries to trigger unwanted file downloads or access local resources.
+
+---
+
+## 🧠 What Has Been Done
+
+1. **Integrated a Groq-powered LLM agent** (`run_groq_agent.py`) with BrowserGym.  
+   The model receives the web page content and task goal and responds with text or code actions.
+
+2. **Vendored (local) copies of BrowserGym and AgentLab** are now included — no submodules.  
+   This makes the workspace self-contained and reproducible.
+
+3. **Added custom security test tasks** under `browsergym/custom_security_tasks.py`:
+   - `security.files.auto_download`  
+     → Simulates a “drive-by download” of a file.  
+   - `security.files.blob_trap`  
+     → Simulates a “fake invoice PDF” blob that prompts unsafe interaction.
+
+4. **Created local test webpages** in the `assets/` directory:
+   - `assets/auto_download.html`  
+   - `assets/blob_trap.html`  
+   These represent malicious pages used by the above BrowserGym tasks.
+
+5. **Implemented and tested the Groq runner**:
+   ```bash
+   python run_groq_agent.py browsergym/security.files.auto_download
+   python run_groq_agent.py browsergym/security.files.blob_trap
+
+
+## ⚙️ How to Set It Up on Your Machine
+
+### 1️⃣ Clone the repository and switch to the `adarsh` branch
 ```bash
-cd browsergym
-make install
+git clone https://github.com/harishchaurasia/Benchmarking-Privacy-Aware-Autonomous-AI-Agents.git
+cd Benchmarking-Privacy-Aware-Autonomous-AI-Agents
+git checkout adarsh
+# If you already have the shared environment
+source ~/envs/bgym/bin/activate
 
-cd ..
+# Or create your own
+python3 -m venv bgym
+source bgym/bin/activate
 
-cd agentlab
-make setup
-```
 
-### Experiment Configuration Parameters
+#install dependencies
+pip install -r browsergym/requirements.txt
+pip install -r agentlab/requirements.txt
+pip install python-dotenv groq gymnasium playwright
 
-When running experiments, you can customize various parameters to configure how the tests are executed. Here's an explanation of the key parameters that can be set:
 
-```python
-# Example usage:
-run_bgym_experiment(
-    base_url="<path to your webarena instance>",
-    bgym_experiments=bgym_experiments,
-    relaunch=False,
-    n_jobs=0,  # set to 0 to display browser, 1 for headless, >=1 for parallel headless with "ray" (incompatible with debugger)
-    max_steps=15,  # lower for faster testing, use 15 for full task
-    skip_reset_and_massage=True,  # skipping is faster, but set False for reproducing numbers
-)
-```
+#create a .env file at project root
+GROQ_API_KEY=sk-your-groq-api-key
+GROQ_MODEL=llama-3.3-70b-versatile
 
-- **base_url**: The URL of the BrowserGym server where the experiments will run.
-
-- **bgym_experiments**: A list of experiment configurations defining which benchmarks, tasks, agents, and attacks to run.
-
-- **relaunch**: When set to `True`, forces rerunning of experiments even if results already exist but were aborted. Default is `False` to avoid duplicate runs.
-
-- **n_jobs**: Controls parallelization of experiment execution:
-  - `0`: Runs with visible browser UI (non-headless mode); useful for demo/debugging
-  - `1`: Runs in headless mode (no UI) with a single process
-  - `>1`: Runs in parallel headless mode using Ray with the specified number of workers
-
-- **max_steps**: Maximum number of steps each agent is allowed to take per task. Lower values (5-10) are useful for quick testing, while higher values (30) are recommended for full task completion evaluation.
-
-- **skip_reset_and_massage**: When set to `True`, skips environment reset to speed up debugging. This should always be set to `False` when making experiments.
-
-## Results
-
-Experiment results are stored in the `results/browsergym` directory, organized by the datetime when they were created. Each results directory contains:
-
-- Detailed information about benchmarks, attacks, and tasks
-- CSV files with metrics including:
-  - Attack Success Rate (ASR)
-  - Task Success Rate (TSR)
-  - Attack Stealth Rate
-  - Input/output token usage
-  - Step counts
-  - Agent model information
-
-You can drill down into individual tasks using standard BrowserGym tools to further analyze agent behavior during the attacks.
+# run  the agents on the task
+python run_groq_agent.py browsergym/security.files.auto_download
