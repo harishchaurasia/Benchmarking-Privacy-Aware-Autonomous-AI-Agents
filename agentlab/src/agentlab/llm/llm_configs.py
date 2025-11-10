@@ -245,6 +245,15 @@ CHAT_MODEL_ARGS_DICT = {
         backend="huggingface",
         **default_oss_llms_args,
     ),
+    "websecarena": SelfHostedModelArgs(
+        model_name="meta-llama/Llama-3.1-8B-Instruct",
+        model_url="meta-llama/Llama-3.1-8B-Instruct",
+        max_total_tokens=16_384,
+        max_input_tokens=16_384 - 512,
+        max_new_tokens=512,
+        backend="huggingface",
+        **default_oss_llms_args,
+    ),
     "mistralai/Mixtral-8x22B-Instruct-v0.1": SelfHostedModelArgs(
         model_name="mistralai/Mixtral-8x22B-Instruct-v0.1",
         max_total_tokens=32_000,

@@ -917,6 +917,9 @@ class Discussion:
     def to_markdown(self):
         self.merge()
         return "\n".join([f"Message {i}\n{m.to_markdown()}\n" for i, m in enumerate(self.messages)])
+    
+    def to_dicts(self):
+        return [dict(m) for m in self.messages]
 
 
 if __name__ == "__main__":

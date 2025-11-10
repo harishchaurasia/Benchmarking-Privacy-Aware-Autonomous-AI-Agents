@@ -89,7 +89,7 @@ class HFBaseChatModel(AbstractChatModel):
         if self.tokenizer:
             try:
                 if isinstance(messages, Discussion):
-                    messages.merge()
+                    messages.merge() 
                 prompt = self.tokenizer.apply_chat_template(messages, tokenize=False)
             except Exception as e:
                 if "Conversation roles must alternate" in str(e):
@@ -114,7 +114,10 @@ class HFBaseChatModel(AbstractChatModel):
                         if temperature is not None
                         else getattr(self, "temperature", 0.1)
                     )
-                    answer = self.llm(prompt, temperature=temperature)
+                    # answer = self.llm(prompt, temperature=temperature)
+                    answer = self.llm(messages.to_dicts(), temperature=temperature)
+                    answer = answer.choices[0].message.content
+                    print("answer: ", answer)
                     response = AIMessage(answer)
                     if self.log_probs:
                         response["content"] = answer.generated_text
@@ -201,8 +204,13 @@ class HuggingFaceURLChatModel(HFBaseChatModel):
             ) from e
 
         client = InferenceClient(model=model_url, token=token)
+        # self.llm = partial(
+        #     client.text_generation,
+        #     max_new_tokens=max_new_tokens,
+        #     details=log_probs,
+        # )
         self.llm = partial(
-            client.text_generation,
-            max_new_tokens=max_new_tokens,
-            details=log_probs,
+            client.chat_completion,
+            max_tokens=max_new_tokens,
+            logprobs=log_probs,
         )

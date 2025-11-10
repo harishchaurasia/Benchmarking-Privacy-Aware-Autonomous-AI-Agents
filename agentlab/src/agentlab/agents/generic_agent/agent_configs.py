@@ -55,7 +55,7 @@ FLAGS_CUSTOM = GenericPromptFlags(
 
 
 AGENT_CUSTOM = GenericAgentArgs(
-    chat_model_args=CHAT_MODEL_ARGS_DICT["openrouter/meta-llama/llama-3.1-8b-instruct"],
+    chat_model_args=CHAT_MODEL_ARGS_DICT["websecarena"],
     flags=FLAGS_CUSTOM,
 )
 

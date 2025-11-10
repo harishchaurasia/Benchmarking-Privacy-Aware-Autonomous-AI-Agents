@@ -6,7 +6,7 @@ Run:
     python run_study_hidden_form.py
 """
 
-from agentlab.agents.generic_agent import AGENT_8B 
+from agentlab.agents.generic_agent import AGENT_CUSTOM
 from agentlab.experiments.study import make_study
 import browsergym.websecarena  # ensure the benchmark is registered
 
@@ -15,7 +15,7 @@ import browsergym.websecarena  # ensure the benchmark is registered
 # -------------------------------------------------------
 study = make_study(
     benchmark="websecarena",  # your registered task
-    agent_args=[AGENT_8B],
+    agent_args=[AGENT_CUSTOM],
     # seeds=[0, 1, 2, 3, 4],          # 5 independent runs
     # timeout=300,                    # seconds per episode
     # max_steps=30,                   # max agent steps per episode
