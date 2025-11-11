@@ -74,3 +74,75 @@ study.run(
     relaunch_errors=True
 )
 ```
+
+## Running Hugging face models with client infrence
+To run a hugging face model useing the hugging face hub client infrance library set the enviroment variable `export AGENTLAB_MODEL_TOKEN=<your hugging face token>`. 
+
+### Define a new Hugging face model
+A new Hugging face model can be defined in AgentLab by adding a `SelfHostedModelArgs` model to the `CHAT_MODEL_ARGS_DICT` in the [llm_configs.py](agentlab/src/agentlab/llm/llm_configs.py) file like below:
+
+```python
+"meta-llama/Meta-Llama-3-8B-Instruct": SelfHostedModelArgs(
+        model_name="meta-llama/Meta-Llama-3-8B-Instruct",
+        model_url="meta-llama/Meta-Llama-3-8B-Instruct",
+        max_total_tokens=16_384,
+        max_input_tokens=16_384 - 512,
+        max_new_tokens=512,
+        backend="huggingface",
+        **default_oss_llms_args,
+    )
+```
+
+be sure to set set both `model_name` and `model_url` params.
+
+### Define a Hugging face agent
+A generic agent running a hugging face model can be created by defining a `GenericAgentArgs` in the [agent_configs.py](agentlab/src/agentlab/agents/generic_agent/agent_configs.py) file by setting the `chat_model_args` parameter to be the model you defined before. The agent flags are defined by creating a `GenericPromptFlags` object like the one below:
+```python
+GenericPromptFlags(
+    obs=dp.ObsFlags(
+        use_html=False,
+        use_ax_tree=True,
+        use_focused_element=True,
+        use_error_logs=True,
+        use_history=True,
+        use_past_error_logs=False,
+        use_action_history=True,
+        use_think_history=False,
+        use_diff=False,
+        html_type="pruned_html",
+        use_screenshot=False,
+        use_som=False,
+        extract_visible_tag=True,
+        extract_clickable_tag=False,
+        extract_coords="False",
+        filter_visible_elements_only=False,
+    ),
+    action=dp.ActionFlags(
+        action_set=HighLevelActionSetArgs(
+            subsets=["bid"],
+            multiaction=False,
+        ),
+        long_description=False,
+        individual_examples=True,
+    ),
+    use_plan=False,
+    use_criticise=False,
+    use_thinking=True,
+    use_memory=False,
+    use_concrete_example=True,
+    use_abstract_example=True,
+    use_hints=True,
+    enable_chat=False,
+    max_prompt_tokens=40_000,
+    be_cautious=True,
+    extra_instructions=None,
+)
+```
+those flags are passed to the Agent among with the model to use:
+```python
+AGENT_CUSTOM = GenericAgentArgs(
+    chat_model_args=CHAT_MODEL_ARGS_DICT["websecarena"],
+    flags=FLAGS_CUSTOM,
+)
+```
+to expose your agent along side the other AgentLab agents go to the [__init__.py](agentlab/src/agentlab/agents/generic_agent/__init__.py) file, import your agent and add it to the `__all__` list.

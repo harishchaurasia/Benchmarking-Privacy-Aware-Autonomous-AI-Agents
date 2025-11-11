@@ -53,12 +53,10 @@ FLAGS_CUSTOM = GenericPromptFlags(
     extra_instructions=None,
 )
 
-
 AGENT_CUSTOM = GenericAgentArgs(
     chat_model_args=CHAT_MODEL_ARGS_DICT["websecarena"],
     flags=FLAGS_CUSTOM,
 )
-
 
 # GPT-3.5 default config
 FLAGS_GPT_3_5 = GenericPromptFlags(

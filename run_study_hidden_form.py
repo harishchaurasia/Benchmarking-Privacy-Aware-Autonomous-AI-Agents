@@ -8,7 +8,6 @@ Run:
 
 from agentlab.agents.generic_agent import AGENT_CUSTOM
 from agentlab.experiments.study import make_study
-import browsergym.websecarena  # ensure the benchmark is registered
 
 # -------------------------------------------------------
 # 2. Configure the study
