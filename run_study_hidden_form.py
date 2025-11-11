@@ -7,14 +7,90 @@ Run:
 """
 
 from agentlab.agents.generic_agent import AGENT_CUSTOM
+from agentlab.agents.generic_agent.generic_agent import GenericAgentArgs
+from agentlab.agents.generic_agent.generic_agent_prompt import GenericPromptFlags
 from agentlab.experiments.study import make_study
+from agentlab.llm.chat_api import SelfHostedModelArgs
+from browsergym.experiments.benchmark.base import Benchmark, HighLevelActionSetArgs
+from browsergym.experiments.benchmark.configs import DEFAULT_HIGHLEVEL_ACTION_SET_ARGS
+from browsergym.experiments.benchmark.utils import make_env_args_list_from_repeat_tasks
+import numpy as np
+from agentlab.agents import dynamic_prompting as dp
+
+websecarena_model = SelfHostedModelArgs(
+    model_name="meta-llama/Llama-3.1-8B-Instruct",
+    model_url="meta-llama/Llama-3.1-8B-Instruct",
+    max_total_tokens=16_384,
+    max_input_tokens=16_384 - 512,
+    max_new_tokens=512,
+    backend="huggingface",
+)
+
+websecarena_flags = GenericPromptFlags(
+    obs=dp.ObsFlags(
+        use_html=False,
+        use_ax_tree=True,
+        use_focused_element=True,
+        use_error_logs=True,
+        use_history=True,
+        use_past_error_logs=False,
+        use_action_history=True,
+        use_think_history=False,
+        use_diff=False,
+        html_type="pruned_html",
+        use_screenshot=False,
+        use_som=False,
+        extract_visible_tag=True,
+        extract_clickable_tag=False,
+        extract_coords="False",
+        filter_visible_elements_only=False,
+    ),
+    action=dp.ActionFlags(
+        action_set=HighLevelActionSetArgs(
+            subsets=["bid"],
+            multiaction=False,
+        ),
+        long_description=False,
+        individual_examples=True,
+    ),
+    use_plan=False,
+    use_criticise=False,
+    use_thinking=True,
+    use_memory=False,
+    use_concrete_example=True,
+    use_abstract_example=True,
+    use_hints=True,
+    enable_chat=False,
+    max_prompt_tokens=40_000,
+    be_cautious=True,
+    extra_instructions=None,
+)
+
+websecarena_agent = GenericAgentArgs(
+    chat_model_args=websecarena_model,
+    flags=websecarena_flags,
+)
+
+websecarena_benchmark = Benchmark(
+    name="websecarena",
+    high_level_action_set_args=DEFAULT_HIGHLEVEL_ACTION_SET_ARGS["websecarena"],
+    is_multi_tab=False,
+    supports_parallel_seeds=True,
+    backends=["websecarena"],
+    env_args_list=make_env_args_list_from_repeat_tasks(
+        task_list=["websecarena.prompt_injection_hidden_form", "websecarena.prompt_injection_html_comment"],
+        max_steps=5,
+        n_repeats=1,
+        seeds_rng=np.random.RandomState(42),
+    )
+)
 
 # -------------------------------------------------------
 # 2. Configure the study
 # -------------------------------------------------------
 study = make_study(
-    benchmark="websecarena",  # your registered task
-    agent_args=[AGENT_CUSTOM],
+    benchmark=websecarena_benchmark,  # your registered task
+    agent_args=[websecarena_agent],
     # seeds=[0, 1, 2, 3, 4],          # 5 independent runs
     # timeout=300,                    # seconds per episode
     # max_steps=30,                   # max agent steps per episode
