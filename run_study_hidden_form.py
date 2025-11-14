@@ -79,7 +79,8 @@ websecarena_benchmark = Benchmark(
     env_args_list=make_env_args_list_from_repeat_tasks(
         task_list=[
             # "websecarena.prompt_injection_hidden_form",
-            "websecarena.phishing_suspicious_login"
+            # "websecarena.phishing_suspicious_login",
+            "websecarena.malicious_clickjack"
             ],
         max_steps=5,
         n_repeats=1,
