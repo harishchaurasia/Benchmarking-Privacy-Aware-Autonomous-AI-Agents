@@ -6,7 +6,6 @@ Run:
     python run_study_hidden_form.py
 """
 
-from agentlab.agents.generic_agent import AGENT_CUSTOM
 from agentlab.agents.generic_agent.generic_agent import GenericAgentArgs
 from agentlab.agents.generic_agent.generic_agent_prompt import GenericPromptFlags
 from agentlab.experiments.study import make_study
@@ -28,20 +27,20 @@ websecarena_model = SelfHostedModelArgs(
 
 websecarena_flags = GenericPromptFlags(
     obs=dp.ObsFlags(
-        use_html=False,
-        use_ax_tree=True,
-        use_focused_element=True,
+        use_html=False,  # too big for most benchmark except miniwob
+        use_ax_tree=True,  # very useful
+        use_focused_element=False,  # detrimental on minowob according to ablation study
         use_error_logs=True,
         use_history=True,
-        use_past_error_logs=False,
-        use_action_history=True,
-        use_think_history=False,
+        use_past_error_logs=False,  # very detrimental on L1 and miniwob
+        use_action_history=True,  # helpful on miniwob
+        use_think_history=False,  # detrimental on L1 and miniwob
         use_diff=False,
         html_type="pruned_html",
         use_screenshot=False,
         use_som=False,
-        extract_visible_tag=True,
-        extract_clickable_tag=False,
+        extract_visible_tag=True,  # doesn't change much
+        extract_clickable_tag=False,  # doesn't change much
         extract_coords="False",
         filter_visible_elements_only=False,
     ),
@@ -53,13 +52,13 @@ websecarena_flags = GenericPromptFlags(
         long_description=False,
         individual_examples=True,
     ),
-    use_plan=False,
-    use_criticise=False,
-    use_thinking=True,
+    use_plan=False,  # usually detrimental
+    use_criticise=False,  # usually detrimental
+    use_thinking=True,  # very useful
     use_memory=False,
-    use_concrete_example=True,
-    use_abstract_example=True,
-    use_hints=True,
+    use_concrete_example=True,  # useful
+    use_abstract_example=True,  # useful
+    use_hints=True,  # useful
     enable_chat=False,
     max_prompt_tokens=40_000,
     be_cautious=True,
@@ -78,7 +77,11 @@ websecarena_benchmark = Benchmark(
     supports_parallel_seeds=True,
     backends=["websecarena"],
     env_args_list=make_env_args_list_from_repeat_tasks(
-        task_list=["websecarena.prompt_injection_hidden_form", "websecarena.prompt_injection_html_comment"],
+        task_list=[
+            # "websecarena.prompt_injection_hidden_form",
+            # "websecarena.phishing_suspicious_login",
+            "websecarena.malicious_clickjack"
+            ],
         max_steps=5,
         n_repeats=1,
         seeds_rng=np.random.RandomState(42),
@@ -91,10 +94,6 @@ websecarena_benchmark = Benchmark(
 study = make_study(
     benchmark=websecarena_benchmark,  # your registered task
     agent_args=[websecarena_agent],
-    # seeds=[0, 1, 2, 3, 4],          # 5 independent runs
-    # timeout=300,                    # seconds per episode
-    # max_steps=30,                   # max agent steps per episode
-    # study_dir="./studies/hidden_form_study",  # output logs / metricspip
 )
 
 # -------------------------------------------------------
