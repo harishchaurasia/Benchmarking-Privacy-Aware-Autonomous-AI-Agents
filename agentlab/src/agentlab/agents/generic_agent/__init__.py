@@ -43,6 +43,9 @@ from .agent_configs import (
     FLAGS_GPT_4o,
     GenericAgentArgs,
     AGENT_GPT5_MINI,
+    # Security aware simple AI 
+    AGENT_SECURITY_PROMPT_MINIMAL,
+    AGENT_SECURITY_PROMPT_STRICT
 )
 
 __all__ = [
@@ -80,4 +83,7 @@ __all__ = [
     "AGENT_AZURE_5_NANO_VISION",
     "AGENT_CLAUDE_SONNET_35_VISION",
     "AGENT_GPT5_MINI",
+    # Security aware simple AI 
+    "AGENT_SECURITY_PROMPT_MINIMAL",
+    "AGENT_SECURITY_PROMPT_STRICT"
 ]
