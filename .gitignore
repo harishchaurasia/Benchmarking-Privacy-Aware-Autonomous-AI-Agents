@@ -8,7 +8,8 @@
 .env.production
 venv/
 .DS_Store
-studies/baseline_study/
+studies/
 __pycache__/
 pycache/
 *.pyc
+.vscode
