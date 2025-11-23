@@ -1,0 +1,15 @@
+[project]
+name = "browsergym-websecarena"
+description = "WebSecArena benchmark for BrowserGym"
+authors = [
+    {name = "William Dahl"},
+    {name = "Adarsh Mohan"},
+    {name = "Harish Chaurasia"},
+    {name = "Changjun Li"},
+    {name = "Shashank Singh"}
+]
+readme = "README.md"
+requires-python = ">3.10"
+
+[project.urls]
+homepage = "https://github.com/harishchaurasia/Benchmarking-Privacy-Aware-Autonomous-AI-Agents"

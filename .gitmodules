@@ -1,6 +1,0 @@
-[submodule "agentlab"]
-path = agentlab
-url = https://github.com/harishchaurasia/AgentLab.git
-[submodule "browsergym"]
-	path = browsergym
-	url = https://github.com/ServiceNow/BrowserGym.git

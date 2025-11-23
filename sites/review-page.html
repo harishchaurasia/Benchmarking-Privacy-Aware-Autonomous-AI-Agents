@@ -1,0 +1,242 @@
+<!-- save as review-page.html and open in your browser -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Product Review — Demo</title>
+<style>
+  :root{
+    --orange:#ff9900;
+    --muted:#6b6b6b;
+    --border:#e6e6e6;
+    --bg:#fff;
+    --radius:10px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  body{background:#fafafa;margin:0;padding:24px;color:#111}
+  .container{max-width:980px;margin:12px auto;padding:28px;background:var(--bg);border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.06);}
+  .header{display:flex;gap:20px;align-items:center}
+  .product-thumb{width:110px;height:88px;flex:0 0 110px;border-radius:8px;object-fit:contain;border:1px solid var(--border);background:#fff;padding:8px}
+  .title-wrap{flex:1}
+  .product-title{font-size:20px;margin:0 0 6px;}
+  .product-sub{color:var(--muted);font-size:13px;margin:0}
+  .rating-row{margin-top:12px;display:flex;align-items:center;gap:12px}
+  .stars{font-size:30px;color:var(--border);cursor:pointer;user-select:none}
+  .star.on{color:var(--orange)}
+  .form{margin-top:20px}
+  label{display:block;font-weight:600;margin:16px 0 8px}
+  textarea,input[type="text"]{width:100%;box-sizing:border-box;border:1px solid var(--border);padding:12px;border-radius:8px;font-size:14px}
+  textarea{min-height:120px;resize:vertical}
+  .upload-drop{border:2px dashed #eee;border-radius:8px;padding:22px;text-align:center;color:var(--muted);margin-top:8px}
+  .small{font-size:13px;color:var(--muted);margin-top:6px}
+  .row{display:flex;gap:12px;align-items:center}
+  .left{flex:1}
+  .submit-wrap{display:flex;justify-content:flex-end;margin-top:18px}
+  .btn{background:var(--orange);color:#111;padding:12px 20px;border-radius:999px;border:none;font-weight:700;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,0.02)}
+  .reviews{margin-top:28px;border-top:1px solid #f0f0f0;padding-top:18px}
+  .review-card{border:1px solid var(--border);padding:14px;border-radius:10px;margin-bottom:12px;background:#fff}
+  .review-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
+  .public-name{font-weight:700}
+  .thumb-preview{max-width:120px;margin-top:10px;border-radius:6px;display:block}
+  @media (max-width:600px){
+    .header{flex-direction:column;align-items:flex-start}
+    .product-thumb{width:100%;height:180px}
+  }
+</style>
+</head>
+<body>
+  <div class="container" role="main" aria-labelledby="heading">
+    <div class="header">
+      <!-- product image uses the uploaded screenshot path -->
+      <img class="product-thumb" src="./assets/playstation_controller.jpg" alt="Product image">
+      <div class="title-wrap">
+        <h1 id="heading" class="product-title">PlayStation DualSense® Wireless Controller - Midnight Black</h1>
+        <p class="product-sub">How was the item? — Share your experience with other customers</p>
+        <div class="rating-row" aria-hidden="false">
+          <div id="starbar" class="stars" role="radiogroup" aria-label="Rating">
+            <span data-value="1" class="star" title="1 star">☆</span>
+            <span data-value="2" class="star" title="2 stars">☆</span>
+            <span data-value="3" class="star" title="3 stars">☆</span>
+            <span data-value="4" class="star" title="4 stars">☆</span>
+            <span data-value="5" class="star" title="5 stars">☆</span>
+          </div>
+          <div class="small" id="ratingText">No rating yet</div>
+        </div>
+      </div>
+    </div>
+
+    <form id="reviewForm" class="form" onsubmit="return false;" aria-describedby="formHelp">
+      <label for="reviewBody">Write a review</label>
+      <textarea id="reviewBody" placeholder="What should other customers know?" required></textarea>
+
+      <label for="upload">Share a video or photo (optional)</label>
+      <div class="upload-drop" id="uploadDrop">Click to choose a file or drag-and-drop here</div>
+      <input id="upload" type="file" accept="image/*,video/*" style="display:none">
+
+      <label for="title">Title your review (required)</label>
+      <input id="title" type="text" placeholder="What's most important to know?" required>
+
+      <label for="publicName">What's your public name? (required)</label>
+      <input id="publicName" type="text" placeholder="You can change this later" value="" required>
+
+      <div class="submit-wrap">
+        <button id="submitBtn" class="btn" type="submit">Submit</button>
+      </div>
+      <!-- <div id="formHelp" class="small">This is a demo page. Reviews are saved locally in your browser (no server).</div> -->
+    </form>
+
+    <section class="reviews" aria-live="polite">
+      <h2>Reviews</h2>
+      <div id="reviewsList">
+        <p class="small">No reviews yet — be the first!</p>
+      </div>
+    </section>
+  </div>
+
+<script>
+  // star rating UI
+  const stars = document.querySelectorAll('.star');
+  let currentRating = 0;
+  const ratingText = document.getElementById('ratingText');
+
+  function setRating(r){
+    currentRating = r;
+    stars.forEach(s => {
+      s.classList.toggle('on', Number(s.dataset.value) <= r);
+      s.textContent = Number(s.dataset.value) <= r ? '★' : '☆';
+    });
+    ratingText.textContent = r ? `${r} out of 5 stars` : 'No rating yet';
+  }
+
+  stars.forEach(s => {
+    s.addEventListener('click', () => setRating(Number(s.dataset.value)));
+    s.addEventListener('mouseover', () => {
+      stars.forEach(st => st.textContent = Number(st.dataset.value) <= Number(s.dataset.value) ? '★' : '☆');
+    });
+    s.addEventListener('mouseout', () => setRating(currentRating));
+  });
+
+  // file upload UI
+  const upload = document.getElementById('upload');
+  const uploadDrop = document.getElementById('uploadDrop');
+  let uploadedFileDataUrl = null;
+
+  uploadDrop.addEventListener('click', () => upload.click());
+  upload.addEventListener('change', handleFile);
+
+  uploadDrop.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadDrop.style.borderColor = '#ddd';
+  });
+  uploadDrop.addEventListener('dragleave', () => {
+    uploadDrop.style.borderColor = '';
+  });
+  uploadDrop.addEventListener('drop', (e) => {
+    e.preventDefault();
+    upload.files = e.dataTransfer.files;
+    handleFile();
+  });
+
+  function handleFile(){
+    const f = upload.files && upload.files[0];
+    if(!f) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      uploadedFileDataUrl = reader.result;
+      uploadDrop.innerHTML = '<strong>Attached:</strong> ' + (f.name.length>30 ? f.name.slice(0,27)+'...' : f.name);
+      if(f.type.startsWith('image/')){
+        const img = document.createElement('img');
+        img.src = uploadedFileDataUrl;
+        img.className = 'thumb-preview';
+        uploadDrop.appendChild(img);
+      }
+    };
+    reader.readAsDataURL(f);
+  }
+
+  // reviews persistence (localStorage)
+  const REV_KEY = 'demo_product_reviews_v1';
+  const reviewsList = document.getElementById('reviewsList');
+
+  function loadReviews(){
+    const raw = localStorage.getItem(REV_KEY);
+    try{
+      return raw ? JSON.parse(raw) : [];
+    }catch(e){ return []; }
+  }
+  function saveReviews(list){
+    localStorage.setItem(REV_KEY, JSON.stringify(list));
+  }
+  function renderReviews(){
+    const list = loadReviews();
+    if(!list.length){
+      reviewsList.innerHTML = '<p class="small">No reviews yet — be the first!</p>';
+      return;
+    }
+    reviewsList.innerHTML = '';
+    list.slice().reverse().forEach(r => {
+      const card = document.createElement('div');
+      card.className = 'review-card';
+      const meta = document.createElement('div');
+      meta.className = 'review-meta';
+      meta.innerHTML = `<div><span class="public-name">${escapeHtml(r.name)}</span> • <span class="small">${r.rating}★</span></div><div class="small">${new Date(r.when).toLocaleString()}</div>`;
+      const title = document.createElement('div');
+      title.style.fontWeight='700';
+      title.textContent = r.title;
+      const body = document.createElement('div');
+      body.style.marginTop='8px';
+      body.textContent = r.body;
+      card.appendChild(meta);
+      card.appendChild(title);
+      card.appendChild(body);
+      if(r.attachment){
+        const img = document.createElement('img');
+        img.src = r.attachment;
+        img.className='thumb-preview';
+        card.appendChild(img);
+      }
+      reviewsList.appendChild(card);
+    });
+  }
+
+  // escape helper
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  // submit handler
+  document.getElementById('submitBtn').addEventListener('click', () => {
+    const title = document.getElementById('title').value.trim();
+    const body = document.getElementById('reviewBody').value.trim();
+    const name = document.getElementById('publicName').value.trim();
+    if(!title || !body || !name){
+      alert('Please fill title, review text and public name.');
+      return;
+    }
+    if(currentRating === 0){
+      if(!confirm('You have not selected a star rating. Submit without a rating?')) return;
+    }
+    const newReview = {
+      title, body, name, rating: currentRating, attachment: uploadedFileDataUrl, when: Date.now()
+    };
+    const list = loadReviews();
+    list.push(newReview);
+    saveReviews(list);
+    // reset form
+    document.getElementById('reviewBody').value='';
+    document.getElementById('title').value='';
+    uploadedFileDataUrl = null;
+    upload.value='';
+    uploadDrop.innerHTML = 'Click to choose a file or drag-and-drop here';
+    setRating(0);
+    renderReviews();
+    // friendly confirmation
+    alert('Thanks — your review was posted locally.');
+  });
+
+  // init
+  renderReviews();
+</script>
+</body>
+</html>

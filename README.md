@@ -1,4 +1,4 @@
-# BrowserGym+ AgentLab Threat Models
+# BrowserGym + AgentLab Setup & Usage
 
 This repository contains tools and scripts for defining and testing threat models in the [BrowserGym](https://github.com/ServiceNow/BrowserGym) + [AgentLab](https://github.com/ServiceNow/AgentLab) agentic framework. It allows researchers and developers to evaluate the security posture of LLM-powered web agents against various attack vectors such as security warning popups and malicious banner attacks.
 
@@ -25,48 +25,124 @@ cd agentlab
 make setup
 ```
 
-### Experiment Configuration Parameters
+## BrowserGym and WebSecArena
+Follow the instructions in the [WebSecArena Readme](./browsergym/websecarena/README.md) for adding new tasks to the WebSecArena benchmark and registering the task in the BrowserGym enviroment
 
-When running experiments, you can customize various parameters to configure how the tests are executed. Here's an explanation of the key parameters that can be set:
+## AgentLab
+Running experiments in AgentLab is acomplished via the `Study` api. A new `Study` can be made by calling the `make_study()` function. Studies can then be run by calling the `Study.run()` function
+
+### Makeing a new Study
+The `make_study()` function initializes and runs one or more agents on a selected benchmark within the AgentLab framework. It accepts either a single or list of `AgentArgs` configurations—objects that define how agents are built and executed—and a `Benchmark` or benchmark name specifying the evaluation environment. Logging levels for both file and console output can be set to control verbosity, while an optional `suffix` and `comment` let users annotate experiments for tracking and reproducibility. Advanced parameters allow customization of execution behavior: setting `ignore_dependencies=True` can bypass inter-task dependencies to accelerate parallel runs (though with minor performance trade-offs), and `parallel_servers` enables distributing agents across multiple instances for concurrent evaluation. Depending on the benchmark’s structure, the function returns a `Study`, `SequentialStudies`, or `ParallelStudies` object, which manages experiment execution, parallelization, and reproducibility.
 
 ```python
-# Example usage:
-run_bgym_experiment(
-    base_url="<path to your webarena instance>",
-    bgym_experiments=bgym_experiments,
-    relaunch=False,
-    n_jobs=0,  # set to 0 to display browser, 1 for headless, >=1 for parallel headless with "ray" (incompatible with debugger)
-    max_steps=15,  # lower for faster testing, use 15 for full task
-    skip_reset_and_massage=True,  # skipping is faster, but set False for reproducing numbers
+# Create and configure the study
+study = make_study(
+    agent_args=[AGENT_4o_MINI],   # one or more agents to evaluate
+    benchmark="websecarena",                  # can be 'miniwob', 'workarena_l1', etc.
+    logging_level=20,                         # INFO level for file logs
+    logging_level_stdout=30,                  # WARNING level for console output
+    suffix="_comparison_run",                 # tag appended to study folder name
+    comment="Testing GPT-4o on WebSecArena benchmark",
+    ignore_dependencies=False,                # keep benchmark task dependencies
+    parallel_servers=[
+        {"host": "server1", "port": 8080},
+        {"host": "server2", "port": 8081},
+    ]                                         # optional: distribute load across servers
 )
 ```
 
-- **base_url**: The URL of the BrowserGym server where the experiments will run.
+### Running a Study
+The `run()` method orchestrates the execution of a study—launching multiple experiment jobs, monitoring progress, and retrying failed or incomplete runs up to a specified number of times. It can run tasks in parallel using a backend such as **Ray** or **Joblib**, while tracking detailed reproducibility information and saving all intermediate results to disk. The method ensures robustness against transient errors (e.g., server crashes or API rate limits) and halts retries if the error rate remains high or no progress is observed across relaunch attempts.
 
-- **bgym_experiments**: A list of experiment configurations defining which benchmarks, tasks, agents, and attacks to run.
+#### Behavior
+1. Records reproducibility metadata (e.g., software versions, benchmark config, timestamps).
+2. Saves the study state to the specified results directory.
+3. Iteratively launches experiments up to n_relaunch times, using the specified parallel backend.
+4. After each run, summarizes results and error reports.
+5. Stops relaunching early if:
+    * The error rate exceeds 30% of total experiments, or
+    * A relaunch fails to reduce the number of errors from the previous iteration.
+6. Logs a final error report and warns if the study remains incomplete after all relaunch attempts.
 
-- **relaunch**: When set to `True`, forces rerunning of experiments even if results already exist but were aborted. Default is `False` to avoid duplicate runs.
+```python
+# Run a study with 10 parallel jobs using Ray
+study.run(
+    n_jobs=10,
+    parallel_backend="ray",
+    strict_reproducibility=True,
+    n_relaunch=3,
+    relaunch_errors=True
+)
+```
 
-- **n_jobs**: Controls parallelization of experiment execution:
-  - `0`: Runs with visible browser UI (non-headless mode); useful for demo/debugging
-  - `1`: Runs in headless mode (no UI) with a single process
-  - `>1`: Runs in parallel headless mode using Ray with the specified number of workers
+## Running Hugging face models with client infrence
+To run a hugging face model useing the hugging face hub client infrance library set the enviroment variable `export AGENTLAB_MODEL_TOKEN=<your hugging face token>`. 
 
-- **max_steps**: Maximum number of steps each agent is allowed to take per task. Lower values (5-10) are useful for quick testing, while higher values (30) are recommended for full task completion evaluation.
+### Define a new Hugging face model
+A new Hugging face model can be defined in AgentLab by adding a `SelfHostedModelArgs` model to the `CHAT_MODEL_ARGS_DICT` in the [llm_configs.py](agentlab/src/agentlab/llm/llm_configs.py) file like below:
 
-- **skip_reset_and_massage**: When set to `True`, skips environment reset to speed up debugging. This should always be set to `False` when making experiments.
+```python
+"meta-llama/Meta-Llama-3-8B-Instruct": SelfHostedModelArgs(
+        model_name="meta-llama/Meta-Llama-3-8B-Instruct",
+        model_url="meta-llama/Meta-Llama-3-8B-Instruct",
+        max_total_tokens=16_384,
+        max_input_tokens=16_384 - 512,
+        max_new_tokens=512,
+        backend="huggingface",
+        **default_oss_llms_args,
+    )
+```
 
-## Results
+be sure to set set both `model_name` and `model_url` params.
 
-Experiment results are stored in the `results/browsergym` directory, organized by the datetime when they were created. Each results directory contains:
-
-- Detailed information about benchmarks, attacks, and tasks
-- CSV files with metrics including:
-  - Attack Success Rate (ASR)
-  - Task Success Rate (TSR)
-  - Attack Stealth Rate
-  - Input/output token usage
-  - Step counts
-  - Agent model information
-
-You can drill down into individual tasks using standard BrowserGym tools to further analyze agent behavior during the attacks.
+### Define a Hugging face agent
+A generic agent running a hugging face model can be created by defining a `GenericAgentArgs` in the [agent_configs.py](agentlab/src/agentlab/agents/generic_agent/agent_configs.py) file by setting the `chat_model_args` parameter to be the model you defined before. The agent flags are defined by creating a `GenericPromptFlags` object like the one below:
+```python
+GenericPromptFlags(
+    obs=dp.ObsFlags(
+        use_html=False,
+        use_ax_tree=True,
+        use_focused_element=True,
+        use_error_logs=True,
+        use_history=True,
+        use_past_error_logs=False,
+        use_action_history=True,
+        use_think_history=False,
+        use_diff=False,
+        html_type="pruned_html",
+        use_screenshot=False,
+        use_som=False,
+        extract_visible_tag=True,
+        extract_clickable_tag=False,
+        extract_coords="False",
+        filter_visible_elements_only=False,
+    ),
+    action=dp.ActionFlags(
+        action_set=HighLevelActionSetArgs(
+            subsets=["bid"],
+            multiaction=False,
+        ),
+        long_description=False,
+        individual_examples=True,
+    ),
+    use_plan=False,
+    use_criticise=False,
+    use_thinking=True,
+    use_memory=False,
+    use_concrete_example=True,
+    use_abstract_example=True,
+    use_hints=True,
+    enable_chat=False,
+    max_prompt_tokens=40_000,
+    be_cautious=True,
+    extra_instructions=None,
+)
+```
+those flags are passed to the Agent among with the model to use:
+```python
+AGENT_CUSTOM = GenericAgentArgs(
+    chat_model_args=CHAT_MODEL_ARGS_DICT["websecarena"],
+    flags=FLAGS_CUSTOM,
+)
+```
+to expose your agent along side the other AgentLab agents go to the [__init__.py](agentlab/src/agentlab/agents/generic_agent/__init__.py) file, import your agent and add it to the `__all__` list.
