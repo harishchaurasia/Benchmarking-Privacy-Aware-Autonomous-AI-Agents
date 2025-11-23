@@ -8,8 +8,8 @@ from websecarena_models import WEBSECARENA_LLAMA, WEBSECARENA_DEEPSEEK, WEBSECAR
 
 websecarena_flags = GenericPromptFlags(
     obs=dp.ObsFlags(
-        use_html=False,  # too big for most benchmark except miniwob
-        use_ax_tree=True,  # very useful
+        use_html=True,  # too big for most benchmark except miniwob
+        use_ax_tree=False,  # very useful
         use_focused_element=False,  # detrimental on minowob according to ablation study
         use_error_logs=True,
         use_history=True,

@@ -12,6 +12,7 @@ ALL_WEBSECARENA_TASKS = [
     tasks.PromptInjectionHiddenFormTask,
     tasks.PromptInjectionHTMLCommentTask,
     tasks.PromptInjectionScriptTask,
+    tasks.PromptInjectionInReview,
     tasks.PhishingSuspiciousLoginTask,
     tasks.PhishingFakePasswordResetTask,
     tasks.PhishingDataHarvestingFormTask,

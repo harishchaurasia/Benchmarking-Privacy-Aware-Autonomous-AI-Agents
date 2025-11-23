@@ -115,7 +115,7 @@ class HFBaseChatModel(AbstractChatModel):
                         else getattr(self, "temperature", 0.1)
                     )
                     # answer = self.llm(prompt, temperature=temperature)
-                    # print("prompt: ", prompt)
+                    print("prompt: ", prompt)
                     answer = self.llm(messages.to_dicts(), temperature=temperature)
                     answer = answer.choices[0].message.content
                     print("answer: ", answer)
