@@ -26,6 +26,8 @@ ALL_WEBSECARENA_TASKS = [
     tasks.MaliciousAdClickTask,
     tasks.PhisingLoginPageTask,
     tasks.SocialEngineeringEmailTask,
+
+    tasks.MaliciousDriveByDownloadTask,
 ]
 
 # register the Miniwob benchmark
