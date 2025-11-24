@@ -21,6 +21,11 @@ ALL_WEBSECARENA_TASKS = [
     tasks.AdversarialEmotionalManipulationTask,
     tasks.AdversarialFakeAuthorityTask,
     tasks.AdversarialMisinformationTask,
+
+    tasks.PromptInjectionInReview,
+    tasks.MaliciousAdClickTask,
+    tasks.PhisingLoginPageTask,
+    tasks.SocialEngineeringEmailTask,
 ]
 
 # register the Miniwob benchmark
