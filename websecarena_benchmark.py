@@ -14,8 +14,10 @@ WEBSECARENA_BENCHMARK = Benchmark(
             # "websecarena.prompt_injection_in_review",
             # "websecarena.malicious_ad_click",
             # "websecarena.phishing_login_page",
-            "websecarena.social_engineering_email",
-            ],
+            # "websecarena.social_engineering_link",
+            # "websecarena.social_engineering_data"
+            "websecarena.social_engineering_attachment",
+        ],
         max_steps=5,
         n_repeats=1,
         seeds_rng=np.random.RandomState(42),

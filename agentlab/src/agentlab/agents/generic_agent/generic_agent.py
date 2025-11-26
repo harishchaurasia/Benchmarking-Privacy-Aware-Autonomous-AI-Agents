@@ -31,6 +31,7 @@ class GenericAgentArgs(AgentArgs):
     chat_model_args: BaseModelArgs = None
     flags: GenericPromptFlags = None
     max_retry: int = 4
+    custom_system_prompt: str = None
 
     def __post_init__(self):
         try:  # some attributes might be temporarily args.CrossProd for hyperparameter generation
@@ -67,7 +68,7 @@ class GenericAgentArgs(AgentArgs):
 
     def make_agent(self):
         return GenericAgent(
-            chat_model_args=self.chat_model_args, flags=self.flags, max_retry=self.max_retry
+            chat_model_args=self.chat_model_args, flags=self.flags, max_retry=self.max_retry, custom_system_prompt=self.custom_system_prompt
         )
 
 
@@ -78,6 +79,7 @@ class GenericAgent(Agent):
         chat_model_args: BaseModelArgs,
         flags: GenericPromptFlags,
         max_retry: int = 4,
+        custom_system_prompt: str = None,
     ):
 
         self.chat_llm = chat_model_args.make_model()
@@ -90,6 +92,8 @@ class GenericAgent(Agent):
 
         self._check_flag_constancy()
         self.reset(seed=None)
+
+        self.custom_system_prompt = custom_system_prompt
 
     def obs_preprocessor(self, obs: dict) -> dict:
         return self._obs_preprocessor(obs)
@@ -111,7 +115,10 @@ class GenericAgent(Agent):
 
         max_prompt_tokens, max_trunc_itr = self._get_maxes()
 
-        system_prompt = SystemMessage(dp.SystemPrompt().prompt)
+        if self.custom_system_prompt is not None:
+            system_prompt = SystemMessage(self.custom_system_prompt)
+        else:
+            system_prompt = SystemMessage(dp.SystemPrompt().prompt)
 
         human_prompt = dp.fit_tokens(
             shrinkable=main_prompt,
