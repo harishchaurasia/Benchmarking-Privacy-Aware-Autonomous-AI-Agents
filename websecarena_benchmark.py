@@ -16,7 +16,8 @@ WEBSECARENA_BENCHMARK = Benchmark(
             # "websecarena.phishing_login_page",
             # "websecarena.social_engineering_link",
             # "websecarena.social_engineering_data"
-            "websecarena.social_engineering_attachment",
+            # "websecarena.social_engineering_attachment",
+            "websecarena.malicious_drive_by_download",
         ],
         max_steps=5,
         n_repeats=1,

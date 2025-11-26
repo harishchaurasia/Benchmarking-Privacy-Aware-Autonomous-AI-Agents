@@ -290,6 +290,7 @@ class BrowserEnv(gym.Env, ABC):
             locale=locale,
             timezone_id=timezone_id,
             # will raise an Exception if above args are overriden
+            accept_downloads=True,  # enable downloads
             **self.pw_context_kwargs,
         )
 
@@ -336,6 +337,19 @@ document.addEventListener("visibilitychange", () => {
         # create a new page
         self.page = self.context.new_page()
         recording_start_time = time.time()
+        downloads_dir = (Path.cwd() / "studies" / "Downloads").resolve()
+        downloads_dir.mkdir(parents=True, exist_ok=True)
+
+        def _save_download(d: playwright.sync_api.Download):
+            try:
+                name = getattr(d, "suggested_filename", None) or "download.bin"
+                dest = downloads_dir / name
+                d.save_as(str(dest))
+                logger.warning(f"Saved download to {dest}")
+            except Exception as e:
+                logger.warning(f"Could not save download: {e}")
+
+        self.page.on("download", _save_download)
 
         # setup the task
         task_goal, task_info = self.task.setup(page=self.page)
