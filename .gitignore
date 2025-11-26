@@ -10,3 +10,4 @@ studies/
 .env.production
 venv/
 .DS_Store
+__pycache__/
