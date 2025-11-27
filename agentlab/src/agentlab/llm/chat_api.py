@@ -129,6 +129,7 @@ class SelfHostedModelArgs(BaseModelArgs):
     token: str = None
     backend: str = "huggingface"
     n_retry_server: int = 4
+    provider: str = "auto"
 
     def make_model(self):
         if self.backend == "huggingface":
@@ -148,6 +149,7 @@ class SelfHostedModelArgs(BaseModelArgs):
                 max_new_tokens=self.max_new_tokens,
                 n_retry_server=self.n_retry_server,
                 log_probs=self.log_probs,
+                provider=self.provider,
             )
         elif self.backend == "vllm":
             return VLLMChatModel(

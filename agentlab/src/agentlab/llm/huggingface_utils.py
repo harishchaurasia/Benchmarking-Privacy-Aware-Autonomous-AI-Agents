@@ -186,6 +186,7 @@ class HuggingFaceURLChatModel(HFBaseChatModel):
         max_new_tokens: Optional[int] = 512,
         n_retry_server: Optional[int] = 4,
         log_probs: Optional[bool] = False,
+        provider: str = "auto",
     ):
         super().__init__(model_name, base_model_name, n_retry_server, log_probs)
         if temperature is not None and temperature < 1e-3:
@@ -204,7 +205,7 @@ class HuggingFaceURLChatModel(HFBaseChatModel):
                 "The 'huggingface_hub' package is required for HuggingFace URL backends."
             ) from e
 
-        client = InferenceClient(model=model_url, token=token)
+        client = InferenceClient(model=model_url, token=token, provider=provider)
         # self.llm = partial(
         #     client.text_generation,
         #     max_new_tokens=max_new_tokens,
