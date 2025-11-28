@@ -3,17 +3,16 @@ from agentlab.experiments.study import make_study
 
 from calc_metrics import compute_rates, latest_subdir
 from websecarena_benchmark import WEBSECARENA_BENCHMARK
-from websecarena_generic_agents import WEBSECARENA_LLAMA_AGENT, WEBSECARENA_QWEN_AGENT, WEBSECARENA_OPENAI_AGENT, WEBSECARENA_MISTRALAI_AGENT, WEBSECARENA_DEEPSEEK_AGENT
-from websecarena_security_agents import SECURITY_AGENT_QWEN, SECURITY_AGENT_OPENAI, SECURITY_AGENT_MISTRALAI, SECURITY_AGENT_DEEPSEEK, SECURITY_AGENT_LLAMA
+from websecarena_agents.few_shot_security_agents import FEW_SHOT_SECURITY_AGENT_QWEN, FEW_SHOT_SECURITY_AGENT_OPENAI, FEW_SHOT_SECURITY_AGENT_MISTRALAI, FEW_SHOT_SECURITY_AGENT_DEEPSEEK, FEW_SHOT_SECURITY_AGENT_LLAMA
 
-study_folder = "will-studies/security_agents/social-engineering"
+study_folder = "will-studies/few_shot_security_agents/social-engineering"
 
 agent = [
-    SECURITY_AGENT_LLAMA,
-    # SECURITY_AGENT_QWEN,
-    # SECURITY_AGENT_OPENAI,
-    # SECURITY_AGENT_MISTRALAI,
-    # SECURITY_AGENT_DEEPSEEK,
+    # FEW_SHOT_SECURITY_AGENT_LLAMA,
+    # FEW_SHOT_SECURITY_AGENT_QWEN,
+    FEW_SHOT_SECURITY_AGENT_OPENAI,
+    # FEW_SHOT_SECURITY_AGENT_MISTRALAI,
+    # FEW_SHOT_SECURITY_AGENT_DEEPSEEK,
 ]
 
 security_study = make_study(
