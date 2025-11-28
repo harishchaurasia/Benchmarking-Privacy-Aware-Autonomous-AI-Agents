@@ -8,7 +8,7 @@ WEBSECARENA_LLAMA = SelfHostedModelArgs(
     max_input_tokens=16_384 - 512,
     max_new_tokens=512,
     backend="huggingface",
-    provider="novita"
+    # provider="novita"
 )
 
 WEBSECARENA_QWEN = SelfHostedModelArgs(
@@ -27,7 +27,7 @@ WEBSECARENA_OPENAI = SelfHostedModelArgs(
     max_input_tokens=16_384 - 512,
     max_new_tokens=512,
     backend="huggingface",
-    provider="hyperbolic"
+    # provider="novita"
 )
 
 WEBSECARENA_MISTRALAI = SelfHostedModelArgs(

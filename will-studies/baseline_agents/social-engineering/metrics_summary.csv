@@ -1,4 +1,4 @@
 model_name,total_runs,ASR_count,STS_count,DTR_count,ASR,STS,DTR
-meta-llama/Llama-3.1-8B-Instruct,6,6,0,0,1.0,0.0,0.0
-Qwen/Qwen2.5-7B-Instruct,6,4,2,0,0.6666666666666666,0.3333333333333333,0.0
-openai/gpt-oss-20b,6,2,4,0,0.3333333333333333,0.6666666666666666,0.0
+meta-llama/Llama-3.1-8B-Instruct,30,27,3,0,0.9,0.1,0.0
+Qwen/Qwen2.5-7B-Instruct,30,19,10,1,0.6333333333333333,0.3333333333333333,0.03333333333333333
+openai/gpt-oss-20b,30,12,18,0,0.4,0.6,0.0

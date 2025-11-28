@@ -20,7 +20,7 @@ WEBSECARENA_BENCHMARK = Benchmark(
             # "websecarena.malicious_drive_by_download",
         ],
         max_steps=5,
-        n_repeats=2,
+        n_repeats=10,
         seeds_rng=np.random.RandomState(42),
     )
 )
