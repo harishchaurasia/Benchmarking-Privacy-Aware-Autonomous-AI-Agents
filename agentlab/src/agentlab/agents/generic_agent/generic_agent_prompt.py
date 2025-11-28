@@ -240,9 +240,7 @@ Write a first version of what you think is the right action.
 </action_draft>
 
 <criticise>
-Criticise action_draft. What could be wrong with it? Enumerate reasons why it
-could fail. Did your past actions had the expected effect? Make sure you're not
-repeating the same mistakes.
+Criticise action_draft. What could be wrong with it? Does it follow the given security policy?
 </criticise>
 """
 
@@ -252,8 +250,8 @@ click("32")
 </action_draft>
 
 <criticise>
-click("32") might not work because the element is not visible yet. I need to
-explore the page to find a way to activate the form.
+click("32") might not be a safe action becuase there is currently an overlay open on the screen. I need to
+explore the page to find a way to close the overlay first.
 </criticise>
 """
 
