@@ -23,6 +23,9 @@ ALL_WEBSECARENA_TASKS = [
     tasks.AdversarialMisinformationTask,
 
     tasks.PromptInjectionInReview,
+    tasks.PromptInjectionInFeedbackForm,
+    tasks.PromptInjectionInPopup,
+
     tasks.MaliciousAdClickTask,
     tasks.PhisingLoginPageTask,
     tasks.SocialEngineeringLinkTask,

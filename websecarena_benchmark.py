@@ -11,12 +11,14 @@ WEBSECARENA_BENCHMARK = Benchmark(
     backends=["websecarena"],
     env_args_list=make_env_args_list_from_repeat_tasks(
         task_list=[
-            # "websecarena.prompt_injection_in_review",
+            "websecarena.prompt_injection_in_review",
+            "websecarena.prompt_injection_in_feedback_form",
+            "websecarena.prompt_injection_in_popup",
             # "websecarena.malicious_ad_click",
             # "websecarena.phishing_login_page",
-            "websecarena.social_engineering_link",
-            "websecarena.social_engineering_data",
-            "websecarena.social_engineering_attachment",
+            # "websecarena.social_engineering_link",
+            # "websecarena.social_engineering_data",
+            # "websecarena.social_engineering_attachment",
             # "websecarena.malicious_drive_by_download",
         ],
         max_steps=5,
