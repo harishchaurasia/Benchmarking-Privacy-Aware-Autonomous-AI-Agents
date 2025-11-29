@@ -17,8 +17,8 @@ The `validate()` function will be used after each agent action to check whether 
 ### Registering the task
 You easily regester the task in the BrowserGym enviroment by simply adding it to the `ALL_WEBSECARENA_TASKS` list in the [__init__.py file](./__init__.py)
 
-### Configuring tasks to run for the Benchmark
-You can update the task list for the WebSecArena Benchmark by navigating to the [configs.py](browsergym/browsergym/experiments/src/browsergym/experiments/benchmark/configs.py) file. In the `DEFAULT_BENCHMARKS` dict, find the `websecarena` entry:
+### Configuring tasks to run for the Defualt WebSecArena Benchmark
+You can update the task list for the Default WebSecArena Benchmark by navigating to the [configs.py](browsergym/browsergym/experiments/src/browsergym/experiments/benchmark/configs.py) file. In the `DEFAULT_BENCHMARKS` dict, find the `websecarena` entry:
 
 ```python
 "websecarena": lambda n_repeats=1: Benchmark(
