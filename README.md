@@ -170,6 +170,8 @@ WEBSECARENA_BENCHMARK = Benchmark(
 ```
 The above configuration is currently set to run all 3 prompt injection tasks with a maxium of 5 steps per task and will repeate each task 10 times, for a total of 30 runs.
 
+To change the tasks to be run on the benchmark, simply replace the task names in the `task_list` parameter with the names of the tasks you want to run. Be sure the tasks were regestered in the WebSecArena BrowserGym benchmark [__init__.py file](./browsergym/websecarena/__init__.py). Be sure to follow the WebSecArena Benchmark [README.md](./browsergym/websecarena/README.md) for directions on how to create new WebSecArena Tasks and how to regester them.
+
 Depending on the user task being given in the task you may need to raise the maxum number of steps allowed. 
 
 To ensure significgant results for the attack type you are testing you should try to execute the agent a total of 30 times, i.e. (1 task x 30 times, 2 tasks x 15 times, 3 tasks x 10 times).
