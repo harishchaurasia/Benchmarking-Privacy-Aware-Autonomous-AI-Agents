@@ -1,7 +1,7 @@
 from agentlab.experiments.study import make_study
 
-from calc_metrics import compute_rates, latest_subdir
-from websecarena_benchmark import WEBSECARENA_BENCHMARK
+from utils.calc_metrics import compute_rates, latest_subdir
+from config.websecarena_benchmark import WEBSECARENA_BENCHMARK
 from websecarena_agents.generic_agents import WEBSECARENA_LLAMA_AGENT, WEBSECARENA_QWEN_AGENT, WEBSECARENA_OPENAI_AGENT, WEBSECARENA_MISTRALAI_AGENT, WEBSECARENA_DEEPSEEK_AGENT
 
 study_folder = "will-studies/baseline_agents/prompt-injection"

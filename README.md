@@ -146,3 +146,72 @@ AGENT_CUSTOM = GenericAgentArgs(
 )
 ```
 to expose your agent along side the other AgentLab agents go to the [__init__.py](agentlab/src/agentlab/agents/generic_agent/__init__.py) file, import your agent and add it to the `__all__` list.
+
+## Configuring the WebSecArean Benchmark
+The instance of the WebSecArena benchmark used by the studies in the file [websecarena_benchmark.py](./config/websecarena_benchmark.py). Here, you can select the tasks you want to be run when running a study, the max steps and the number of times a task should be repeted.
+```python
+WEBSECARENA_BENCHMARK = Benchmark(
+    name="websecarena",
+    high_level_action_set_args=DEFAULT_HIGHLEVEL_ACTION_SET_ARGS["websecarena"],
+    is_multi_tab=False,
+    supports_parallel_seeds=True,
+    backends=["websecarena"],
+    env_args_list=make_env_args_list_from_repeat_tasks(
+        task_list=[
+            "websecarena.prompt_injection_in_review",
+            "websecarena.prompt_injection_in_feedback_form",
+            "websecarena.prompt_injection_in_popup",
+        ],
+        max_steps=5,
+        n_repeats=10,
+        seeds_rng=np.random.RandomState(42),
+    )
+)
+```
+The above configuration is currently set to run all 3 prompt injection tasks with a maxium of 5 steps per task and will repeate each task 10 times, for a total of 30 runs.
+
+Depending on the user task being given in the task you may need to raise the maxum number of steps allowed. 
+
+To ensure significgant results for the attack type you are testing you should try to execute the agent a total of 30 times, i.e. (1 task x 30 times, 2 tasks x 15 times, 3 tasks x 10 times).
+
+## Running Studies
+There are 4 studies, one for each type of agent.
+1. [run_baseline_study.py](./run_basline_study.py)
+2. [run_zero_shot_security_study.py](./run_zero_shot_security_study.py)
+3. [run_few_shot_security_study.py](./run_few_shot_security_study.py)
+4. [run_self_reflection_study.py](./run_self_reflection_security_study.py)
+
+### Setting the result folder
+Before running they study, set the location to save the results to by updating the `study_folder` variable:
+```python
+study_folder = "will-studies/baseline_agents/prompt-injection"
+```
+The above example will save the result of the study to the folder `will-stduies/baseline_agents/prompt-injection`. You dont need to worry about creating the folder before hand, the script will take care of that for you.
+
+### Setting the agent
+The metric computation script can only support the computation of the results for a single agent at a time. Therefore you will need to select the agent you want to run the study on. To do so, simply enable the agen tyou want to run uncommenting it out in the `agent` list:
+```python
+agent = [
+    # WEBSECARENA_LLAMA_AGENT, 
+    # WEBSECARENA_QWEN_AGENT, 
+    WEBSECARENA_OPENAI_AGENT, 
+    # WEBSECARENA_MISTRALAI_AGENT, 
+    # WEBSECARENA_DEEPSEEK_AGENT
+]
+```
+The above sets the study to run using the baseline agent `WEBSECARENA_OPENAI_AGENT` which using the `gpt-oss-20b` model.
+
+With the study folder set and the agent chosen, you can run the study!
+
+To run the study again with a diffrent agent, simply comment out the one you just ran and uncomment out the one you would like to run now.
+
+### Computing the results
+After running the study the results will be stored in a csv file called `metrics_summary.csv` in the path specified by the `study_folder` variable. The file will contain the comulative results for each agent you have run the study on, one agent per row. As you run the study on more agents the results for the new agent will be appended to the end of the csv file. 
+
+## Implemented Agents
+The 4 agent types to run the studies on can be found in the `websecarena_agents` folder:
+
+1. [generic_agents.py](./websecarena_agents/generic_agents.py)
+2. [zero_shot_security_agents.py](./websecarena_agents/zero_shot_security_agents.py)
+3. [few_shot_security_agents.py](./websecarena_agents/few_shot_security_agents.py)
+4. [self_reflection_security_agents.py](./websecarena_agents/self_reflection_security_agents.py)
