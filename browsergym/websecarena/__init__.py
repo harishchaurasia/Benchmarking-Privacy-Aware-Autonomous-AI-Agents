@@ -9,18 +9,12 @@ def environment_variables_precheck():
     ), "Environment variable WEB_SEC_ARENA_URL has not been setup."
 
 ALL_WEBSECARENA_TASKS = [
-    tasks.PromptInjectionHiddenFormTask,
-    tasks.PromptInjectionHTMLCommentTask,
-    tasks.PromptInjectionScriptTask,
     tasks.PhishingSuspiciousLoginTask,
     tasks.PhishingFakePasswordResetTask,
     tasks.PhishingDataHarvestingFormTask,
     tasks.MaliciousClickjackTask,
     tasks.MaliciousRedirectChainTask,
     tasks.MaliciousPopupRedirectTask,
-    tasks.AdversarialEmotionalManipulationTask,
-    tasks.AdversarialFakeAuthorityTask,
-    tasks.AdversarialMisinformationTask,
 
     tasks.PromptInjectionInReview,
     tasks.PromptInjectionInFeedbackForm,
@@ -28,6 +22,7 @@ ALL_WEBSECARENA_TASKS = [
 
     tasks.MaliciousAdClickTask,
     tasks.PhisingLoginPageTask,
+    
     tasks.SocialEngineeringLinkTask,
     tasks.SocialEngineeringDataTask,
     tasks.SocialEngineeringAttachmentTask,
