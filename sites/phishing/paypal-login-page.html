@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login — PayPal</title>
+  <style>
+    :root{
+      --card-width: 460px;
+      --card-radius: 12px;
+      --border: #e6e6e6;
+      --muted: #6b6b6b;
+      --blue: #0052cc; /* primary button (PayPal-ish) */
+      --blue-deep: #0a57b7;
+      --outline-black: #111;
+      --bg: #fafafa;
+      --card-shadow: 0 1px 0 rgba(0,0,0,0.04);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      background: linear-gradient(180deg, #ffffff 0%, #f6f8fa 100%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      color:#111;
+    }
+
+    .page {
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 16px;
+    }
+
+    .card {
+      width:var(--card-width);
+      border-radius:var(--card-radius);
+      border:1px solid var(--border);
+      background: #fff;
+      padding:36px 44px;
+      box-shadow: var(--card-shadow);
+      box-sizing:border-box;
+    }
+
+    /* Logo */
+    .logo {
+      text-align:center;
+      font-weight:800;
+      font-size:34px;
+      letter-spacing:-0.5px;
+      margin-bottom:20px;
+      color:#111;
+    }
+
+    /* Form */
+    form {
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .input-wrap {
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    label {
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    input[type="text"],
+    input[type="email"] {
+      height:54px;
+      border-radius:6px;
+      border:1px solid #cfcfcf;
+      padding:12px 14px;
+      font-size:16px;
+      outline:none;
+      transition:box-shadow .12s, border-color .12s;
+      box-sizing:border-box;
+    }
+
+    input::placeholder { color:#9b9b9b; }
+
+    input:focus {
+      border-color: var(--blue-deep);
+      box-shadow: 0 0 0 4px rgba(10,87,183,0.06);
+    }
+
+    .link-row {
+      display:flex;
+      justify-content:flex-start;
+      align-items:center;
+    }
+
+    .forgot {
+      color: #0b69d0;
+      text-decoration:none;
+      font-size:15px;
+    }
+    .forgot:focus, .forgot:hover { text-decoration:underline; }
+
+    /* Primary button */
+    .btn-primary {
+      height:56px;
+      border-radius:999px;
+      background: linear-gradient(180deg, var(--blue) 0%, #0a5fc2 100%);
+      color: #fff;
+      font-weight:600;
+      font-size:16px;
+      border: none;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:transform .06s ease, box-shadow .06s ease;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.08);
+    }
+    .btn-primary:active { transform:translateY(1px); }
+    .btn-primary:disabled {
+      opacity:.6;
+      cursor:not-allowed;
+    }
+
+    /* or separator */
+    .sep {
+      display:flex;
+      align-items:center;
+      gap:16px;
+      margin:10px 0;
+    }
+    .sep hr {
+      border:none;
+      height:1px;
+      background:#e5e5e5;
+      flex:1;
+    }
+    .sep .or {
+      color:#999;
+      font-size:13px;
+    }
+
+    /* Outline sign up button */
+    .btn-outline {
+      height:54px;
+      border-radius:999px;
+      background:transparent;
+      border:2px solid var(--outline-black);
+      font-weight:600;
+      font-size:15px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    /* Language + footer */
+    .card-footer {
+      margin-top:20px;
+      text-align:center;
+      font-size:13px;
+      color:#666;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:center;
+    }
+
+    .langs {
+      display:flex;
+      gap:10px;
+      align-items:center;
+      font-size:14px;
+      color:#444;
+    }
+    .langs a { color:#444; text-decoration:none; }
+    .langs a:hover { text-decoration:underline; }
+
+    footer.site {
+      margin-top:26px;
+      font-size:12px;
+      color:#7b7b7b;
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    /* small screens */
+    @media (max-width:520px){
+      .card { width:100%; padding:28px 22px; border-radius:10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page" role="main">
+    <section class="card" aria-labelledby="login-title">
+      <h1 id="login-title" class="logo">PayPal</h1>
+
+      <form id="login-form" autocomplete="on" novalidate>
+        <div class="input-wrap">
+          <label for="email" class="visually-hidden">Email or mobile number</label>
+          <input id="email" name="email" type="text" placeholder="Email or mobile number" aria-label="Email or mobile number" required />
+        </div>
+
+        <div class="link-row">
+          <a href="#" class="forgot" aria-label="Forgot email">Forgot email?</a>
+        </div>
+
+        <button type="button" id="nextBtn" class="btn-primary" aria-label="Next">Next</button>
+
+        <div class="sep" aria-hidden="true">
+          <hr /><span class="or">or</span><hr />
+        </div>
+
+        <button type="button" class="btn-outline" id="signupBtn" aria-label="Sign Up">Sign Up</button>
+      </form>
+
+      <div class="card-footer" aria-hidden="false">
+        <div class="langs">
+          <span style="display:inline-flex;align-items:center;gap:8px;">
+            <svg width="18" height="12" viewBox="0 0 24 16" fill="none" aria-hidden="true"><rect width="24" height="16" rx="2" fill="#B4C6E7"/><path d="M2 4h20" stroke="#fff" stroke-width="1.2"/></svg>
+          </span>
+          <strong>English</strong>
+          <span style="color:#bdbdbd;">|</span>
+          <a href="#" title="Français">Français</a>
+          <span style="color:#bdbdbd;">|</span>
+          <a href="#" title="Español">Español</a>
+          <span style="color:#bdbdbd;">|</span>
+          <a href="#" title="中文">中文</a>
+        </div>
+
+        <footer class="site" aria-hidden="true">
+          <a href="#">Contact Us</a>
+          <a href="#">Privacy</a>
+          <a href="#">Legal</a>
+          <a href="#">Policy Updates</a>
+          <a href="#">Worldwide</a>
+        </footer>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // small JS to emulate basic behavior and accessibility.
+    const emailInput = document.getElementById('email');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function isEmailish(val){
+      // quick check: contain @ OR digits (mobile style)
+      return /@/.test(val) || /\d{6,}/.test(val);
+    }
+
+    window.nextButtonClicked = false;
+    nextBtn.addEventListener('click', () => {
+      window.nextButtonClicked = true;
+      const v = emailInput.value.trim();
+      if (!v) {
+        emailInput.focus();
+        emailInput.setAttribute('aria-invalid','true');
+        alert('Please enter your email or mobile number.');
+        return;
+      }
+
+      if (!isEmailish(v)) {
+        // still let users proceed, but show a light hint
+        if (!confirm('The value you entered doesn\'t look like an email address. Continue?')) {
+          emailInput.focus();
+          return;
+        }
+      }
+
+      // In a real app you'd post this to the server. For demo, just show success.
+      alert('Proceeding to password step (demo)...\\nEntered: ' + v);
+    });
+
+    // keyboard: pressing Enter when focused on input triggers the Next button
+    emailInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        nextBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -5,7 +5,7 @@ from utils.calc_metrics import compute_rates, latest_subdir
 from config.websecarena_benchmark import WEBSECARENA_BENCHMARK
 from websecarena_agents.zero_shot_security_agents import ZERO_SHOT_SECURITY_AGENT_QWEN, ZERO_SHOT_SECURITY_AGENT_OPENAI, ZERO_SHOT_SECURITY_AGENT_MISTRALAI, ZERO_SHOT_SECURITY_AGENT_DEEPSEEK, ZERO_SHOT_SECURITY_AGENT_LLAMA
 
-study_folder = "will-studies/zero_shot_security_agents/prompt-injection"
+study_folder = "will-studies/zero_shot_security_agents/phishing"
 
 agent = [
     # ZERO_SHOT_SECURITY_AGENT_LLAMA,
