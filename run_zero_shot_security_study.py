@@ -8,9 +8,9 @@ from websecarena_agents.zero_shot_security_agents import ZERO_SHOT_SECURITY_AGEN
 study_folder = "will-studies/zero_shot_security_agents/phishing"
 
 agent = [
-    # ZERO_SHOT_SECURITY_AGENT_LLAMA,
+    ZERO_SHOT_SECURITY_AGENT_LLAMA,
     # ZERO_SHOT_SECURITY_AGENT_QWEN,
-    ZERO_SHOT_SECURITY_AGENT_OPENAI,
+    # ZERO_SHOT_SECURITY_AGENT_OPENAI,
     # ZERO_SHOT_SECURITY_AGENT_MISTRALAI,
     # ZERO_SHOT_SECURITY_AGENT_DEEPSEEK,
 ]

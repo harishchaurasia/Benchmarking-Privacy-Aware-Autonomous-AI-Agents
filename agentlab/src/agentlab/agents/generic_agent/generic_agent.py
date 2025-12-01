@@ -13,6 +13,7 @@ from dataclasses import asdict, dataclass
 from functools import partial
 from warnings import warn
 
+from agentlab.agents.tool_use_agent.tool_use_agent import Block
 import bgym
 from bgym import Benchmark
 from browsergym.experiments.agent import Agent, AgentInfo
@@ -20,7 +21,7 @@ from browsergym.experiments.agent import Agent, AgentInfo
 from agentlab.agents import dynamic_prompting as dp
 from agentlab.agents.agent_args import AgentArgs
 from agentlab.llm.chat_api import BaseModelArgs
-from agentlab.llm.llm_utils import Discussion, ParseError, SystemMessage, retry
+from agentlab.llm.llm_utils import AIMessage, Discussion, HumanMessage, ParseError, SystemMessage, retry
 from agentlab.llm.tracking import cost_tracker_decorator
 
 from .generic_agent_prompt import GenericPromptFlags, MainPrompt
@@ -71,6 +72,44 @@ class GenericAgentArgs(AgentArgs):
             chat_model_args=self.chat_model_args, flags=self.flags, max_retry=self.max_retry, custom_system_prompt=self.custom_system_prompt
         )
 
+@dataclass
+class Summarizer(Block):
+    """Block to summarize the last action and the current state of the environment."""
+
+    do_summary: bool = False
+    high_details: bool = True
+
+    def apply(self, llm, discussion: Discussion) -> dict:
+        if not self.do_summary:
+            return
+
+        discussion.append(HumanMessage("""Summarize\n"""))
+        summary_response = llm(messages=discussion)
+        discussion.append(summary_response)
+        return summary_response
+
+    def apply_init(self, discussion: Discussion) -> dict:
+        """Initialize the summarizer block."""
+        if not self.do_summary:
+            return
+
+        system_msg = SystemMessage(dp.SystemPrompt().prompt)
+        if self.high_details:
+            # Add a system message to the LLM to indicate that it should summarize
+            system_msg.add_text(
+                """# Summarizer instructions:\nWhen asked to summarize, do the following:
+1) Summarize the effect of the last action, with attention to details.
+2) Give a semantic description of the current state of the environment, with attention to details. If there was a repeating mistake, mention the cause of it.
+3) Reason about the overall task at a high level.
+4) What hint can be relevant for the next action? Only chose from the hints provided in the task description. Or select none.
+5) Reason about the next action to take, based on the current state and the goal.
+"""
+            )
+        else:
+            system_msg.add_text(
+                """When asked to summarize, give a semantic description of the current state of the environment."""
+            )
+        discussion.append(system_msg)
 
 class GenericAgent(Agent):
 
@@ -132,6 +171,7 @@ class GenericAgent(Agent):
             # cause it to be too long
 
             chat_messages = Discussion([system_prompt, human_prompt])
+
             ans_dict = retry(
                 self.chat_llm,
                 chat_messages,

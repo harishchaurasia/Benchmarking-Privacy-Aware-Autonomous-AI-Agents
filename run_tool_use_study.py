@@ -1,25 +1,26 @@
+
 from agentlab.experiments.study import make_study
 
 from utils.calc_metrics import compute_rates, latest_subdir
 from config.websecarena_benchmark import WEBSECARENA_BENCHMARK
-from websecarena_agents.generic_agents import WEBSECARENA_LLAMA_AGENT, WEBSECARENA_QWEN_AGENT, WEBSECARENA_OPENAI_AGENT, WEBSECARENA_MISTRALAI_AGENT, WEBSECARENA_DEEPSEEK_AGENT
+from websecarena_agents.tool_use_agent import TOOL_USE_LLAMA_AGENT
 
-study_folder = "will-studies/baseline_agents/phishing"
+study_folder = "will-studies/tool_use_agents/phishing"
 
 agent = [
-    WEBSECARENA_LLAMA_AGENT, 
-    # WEBSECARENA_QWEN_AGENT, 
-    # WEBSECARENA_OPENAI_AGENT, 
-    # WEBSECARENA_MISTRALAI_AGENT, 
-    # WEBSECARENA_DEEPSEEK_AGENT
+    TOOL_USE_LLAMA_AGENT,
+    # ZERO_SHOT_SECURITY_AGENT_QWEN,
+    # ZERO_SHOT_SECURITY_AGENT_OPENAI,
+    # ZERO_SHOT_SECURITY_AGENT_MISTRALAI,
+    # ZERO_SHOT_SECURITY_AGENT_DEEPSEEK,
 ]
 
-baseline_study = make_study(
+security_study = make_study(
     benchmark=WEBSECARENA_BENCHMARK,  # your registered task
     agent_args=agent
 )
 
-baseline_study.run(n_jobs=1, exp_root=study_folder)
+security_study.run(n_jobs=1, exp_root=study_folder)
 
 # compute_rates(
 #     csv_path=f"{latest_subdir(study_folder)}/result_df_trial_1_of_3.csv",
