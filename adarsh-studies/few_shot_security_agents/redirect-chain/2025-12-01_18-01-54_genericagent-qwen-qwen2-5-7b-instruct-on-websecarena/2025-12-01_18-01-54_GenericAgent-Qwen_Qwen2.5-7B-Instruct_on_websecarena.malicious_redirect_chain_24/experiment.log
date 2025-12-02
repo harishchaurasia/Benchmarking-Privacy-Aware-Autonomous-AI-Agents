@@ -1,0 +1,4 @@
+2025-12-01 18:06:13,651 - 62760 - root - WARNING - Agent is in goal mode, but multiple user messages are present in the chat. Consider switching to `enable_chat=True`.
+2025-12-01 18:08:11,020 - 62760 - root - WARNING - Failed to get a response from the server: 
+502 Server Error: Bad Gateway for url: https://router.huggingface.co/together/v1/chat/completions
+Retrying... (1/4)

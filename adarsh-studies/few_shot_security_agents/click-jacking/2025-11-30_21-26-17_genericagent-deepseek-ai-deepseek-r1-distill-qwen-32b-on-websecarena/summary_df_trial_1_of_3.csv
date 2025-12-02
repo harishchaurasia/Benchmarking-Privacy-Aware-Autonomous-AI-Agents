@@ -1,0 +1,2 @@
+agent.agent_name,env.benchmark,avg_reward,std_err,avg_steps,n_completed,n_err,cum_cost
+GenericAgent-deepseek-ai_DeepSeek-R1-Distill-Qwen-32B,websecarena,0.9,0.055,1.867,30/30,0,0.0

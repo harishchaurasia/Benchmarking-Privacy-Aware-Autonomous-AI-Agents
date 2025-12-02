@@ -1,0 +1,2 @@
+agent.agent_name,env.benchmark,avg_reward,std_err,avg_steps,n_completed,n_err,cum_cost
+GenericAgent-openai_gpt-oss-20b,websecarena,0.067,0.126,2.6,30/30,1,0.0
