@@ -21,8 +21,12 @@ ALL_WEBSECARENA_TASKS = [
     tasks.PromptInjectionInPopup,
 
     tasks.MaliciousAdClickTask,
-    tasks.PhisingLoginPageTask,
-    
+    tasks.LikeJackingTask,
+
+    tasks.PhishingAmazonPageTask,
+    tasks.PhishingPaypalPageTask,
+    tasks.PhishingWellsFargoPageTask,
+
     tasks.SocialEngineeringLinkTask,
     tasks.SocialEngineeringDataTask,
     tasks.SocialEngineeringAttachmentTask,

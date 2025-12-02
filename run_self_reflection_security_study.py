@@ -5,7 +5,7 @@ from utils.calc_metrics import compute_rates, latest_subdir
 from config.websecarena_benchmark import WEBSECARENA_BENCHMARK
 from websecarena_agents.self_reflection_security_agents import SELF_REFLECTION_SECURITY_AGENT_QWEN, SELF_REFLECTION_SECURITY_AGENT_OPENAI, SELF_REFLECTION_SECURITY_AGENT_MISTRALAI, SELF_REFLECTION_SECURITY_AGENT_DEEPSEEK, SELF_REFLECTION_SECURITY_AGENT_LLAMA
 
-study_folder = "will-studies/self_reflection_security_agents/prompt-injection"
+study_folder = "will-studies/self_reflection_security_agents/phishing"
 
 agent = [
     # SELF_REFLECTION_SECURITY_AGENT_LLAMA,

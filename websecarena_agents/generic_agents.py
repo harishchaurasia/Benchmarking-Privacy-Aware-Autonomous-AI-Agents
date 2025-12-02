@@ -27,7 +27,7 @@ websecarena_flags = GenericPromptFlags(
     ),
     action=dp.ActionFlags(
         action_set=HighLevelActionSetArgs(
-            subsets=["bid"],
+            subsets=["websecarena"],
             multiaction=False,
         ),
         long_description=False,

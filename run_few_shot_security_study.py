@@ -5,7 +5,7 @@ from utils.calc_metrics import compute_rates, latest_subdir
 from config.websecarena_benchmark import WEBSECARENA_BENCHMARK
 from websecarena_agents.few_shot_security_agents import FEW_SHOT_SECURITY_AGENT_QWEN, FEW_SHOT_SECURITY_AGENT_OPENAI, FEW_SHOT_SECURITY_AGENT_MISTRALAI, FEW_SHOT_SECURITY_AGENT_DEEPSEEK, FEW_SHOT_SECURITY_AGENT_LLAMA
 
-study_folder = "will-studies/few_shot_security_agents/prompt-injection"
+study_folder = "will-studies/few_shot_security_agents/phishing"
 
 agent = [
     # FEW_SHOT_SECURITY_AGENT_LLAMA,
