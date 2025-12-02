@@ -5,7 +5,7 @@ from utils.calc_metrics import compute_rates, latest_subdir
 from config.websecarena_benchmark import WEBSECARENA_BENCHMARK
 from websecarena_agents.self_reflection_security_agents import SELF_REFLECTION_SECURITY_AGENT_QWEN, SELF_REFLECTION_SECURITY_AGENT_OPENAI, SELF_REFLECTION_SECURITY_AGENT_MISTRALAI, SELF_REFLECTION_SECURITY_AGENT_DEEPSEEK, SELF_REFLECTION_SECURITY_AGENT_LLAMA
 
-study_folder = "will-studies/self_reflection_security_agents/prompt-injection"
+study_folder = "changjun-studies/self_reflection_security_agents/phishing/openai"
 
 agent = [
     # SELF_REFLECTION_SECURITY_AGENT_LLAMA,
@@ -20,7 +20,7 @@ security_study = make_study(
     agent_args=agent
 )
 
-security_study.run(n_jobs=1, exp_root=study_folder)
+security_study.run(n_jobs=10, exp_root=study_folder)
 
 compute_rates(
     csv_path=f"{latest_subdir(study_folder)}/result_df_trial_1_of_3.csv",

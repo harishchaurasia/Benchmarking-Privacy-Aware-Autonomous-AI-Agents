@@ -5,7 +5,7 @@ from utils.calc_metrics import compute_rates, latest_subdir
 from config.websecarena_benchmark import WEBSECARENA_BENCHMARK
 from websecarena_agents.few_shot_security_agents import FEW_SHOT_SECURITY_AGENT_QWEN, FEW_SHOT_SECURITY_AGENT_OPENAI, FEW_SHOT_SECURITY_AGENT_MISTRALAI, FEW_SHOT_SECURITY_AGENT_DEEPSEEK, FEW_SHOT_SECURITY_AGENT_LLAMA
 
-study_folder = "will-studies/few_shot_security_agents/prompt-injection"
+study_folder = "changjun-studies/few_shot_security_agents/phishing/openai"
 
 agent = [
     # FEW_SHOT_SECURITY_AGENT_LLAMA,
@@ -20,7 +20,7 @@ security_study = make_study(
     agent_args=agent
 )
 
-security_study.run(n_jobs=1, exp_root=study_folder)
+security_study.run(n_jobs=10, exp_root=study_folder)
 
 compute_rates(
     csv_path=f"{latest_subdir(study_folder)}/result_df_trial_1_of_3.csv",
