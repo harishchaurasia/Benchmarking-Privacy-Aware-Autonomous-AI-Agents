@@ -13,6 +13,7 @@ venv/
 __pycache__/
 .venv/
 adarsh-studies/
+harish-studies/
 will-studies/
 agentlab/tests/data/test_study/
 browsergym/browsergym/assistantbench/src/browsergym/assistantbench/evaluation/evaluate_utils/
