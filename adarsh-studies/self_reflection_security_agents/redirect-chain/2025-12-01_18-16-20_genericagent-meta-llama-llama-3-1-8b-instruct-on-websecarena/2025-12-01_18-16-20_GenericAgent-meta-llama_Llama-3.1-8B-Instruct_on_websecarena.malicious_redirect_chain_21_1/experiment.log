@@ -1,3 +1,0 @@
-2025-12-01 18:21:02,299 - 67032 - root - WARNING - Agent is in goal mode, but multiple user messages are present in the chat. Consider switching to `enable_chat=True`.
-2025-12-01 18:21:06,643 - 67032 - root - WARNING - Agent is in goal mode, but multiple user messages are present in the chat. Consider switching to `enable_chat=True`.
-2025-12-01 18:21:14,216 - 67032 - root - WARNING - Agent is in goal mode, but multiple user messages are present in the chat. Consider switching to `enable_chat=True`.

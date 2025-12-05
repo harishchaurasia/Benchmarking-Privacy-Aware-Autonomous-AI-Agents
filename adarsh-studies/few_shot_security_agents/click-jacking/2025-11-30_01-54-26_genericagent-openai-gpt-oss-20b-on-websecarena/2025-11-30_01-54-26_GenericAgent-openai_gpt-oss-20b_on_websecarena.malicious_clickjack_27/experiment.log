@@ -1,1 +1,0 @@
-2025-11-30 01:57:10,978 - 35412 - root - WARNING - Agent is in goal mode, but multiple user messages are present in the chat. Consider switching to `enable_chat=True`.
