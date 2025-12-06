@@ -11,7 +11,7 @@ WEBSECARENA_BENCHMARK = Benchmark(
     backends=["websecarena"],
     env_args_list=make_env_args_list_from_repeat_tasks(
         task_list=[
-            "websecarena.prompt_injection_in_review",
+            # "websecarena.prompt_injection_in_review",
             # "websecarena.prompt_injection_in_feedback_form",
             # "websecarena.prompt_injection_in_popup",
             # "websecarena.malicious_ad_click",
@@ -23,6 +23,9 @@ WEBSECARENA_BENCHMARK = Benchmark(
             # "websecarena.social_engineering_data",
             # "websecarena.social_engineering_attachment",
             # "websecarena.malicious_drive_by_download",
+            # "websecarena.malicious_clickjack"
+            # "websecarena.malicious_redirect_chain",
+            "websecarena.malicious_popup_redirect",
         ],
         max_steps=1,
         n_repeats=1,
