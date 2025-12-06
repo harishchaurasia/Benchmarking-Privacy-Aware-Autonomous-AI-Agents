@@ -1,0 +1,241 @@
+:root {
+  --bg: #f5f7fb;
+  --panel: #ffffff;
+  --accent: #2151ff;
+  --accent-quiet: #0a8f6a;
+  --danger: #c0392b;
+  --muted: #5b6475;
+  --border: #e2e7f0;
+  --shadow: 0 12px 32px rgba(20, 35, 90, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(circle at 10% 20%, #eef2ff 0, #f9fbff 35%, #f5f7fb 70%);
+  color: #0f172a;
+}
+
+.main-shell {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0 6px;
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: #eef2ff;
+  color: #1f3b8d;
+  border: 1px solid #dbe3ff;
+}
+
+.hero {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 24px 24px 18px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 18px;
+  align-items: center;
+}
+
+.hero h1 {
+  margin: 0 0 10px 0;
+  font-size: 26px;
+}
+
+.hero p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.hero .summary {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.hero .panel {
+  background: linear-gradient(135deg, #1f3b8d, #2e60ff);
+  color: white;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.hero .panel .title {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.hero .panel .url {
+  font-family: "Consolas", "SFMono-Regular", monospace;
+  margin-top: 4px;
+  word-break: break-all;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.card h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.card p {
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 0;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.cta.primary {
+  background: #1f3b8d;
+  color: white;
+  box-shadow: 0 14px 30px rgba(31, 59, 141, 0.18);
+}
+
+.cta.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 36px rgba(31, 59, 141, 0.25);
+}
+
+.cta.secondary {
+  background: #f4f6fb;
+  color: #0f172a;
+  border-color: #d8deea;
+}
+
+.cta.secondary:hover {
+  background: #eef1f8;
+  transform: translateY(-1px);
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.flag {
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.flag.safe {
+  background: #eaf6f1;
+  color: #0a8f6a;
+  border: 1px solid #c8e8db;
+}
+
+.flag.risky {
+  background: #fff1ee;
+  color: #c0392b;
+  border: 1px solid #ffd8d0;
+}
+
+.interstitial {
+  max-width: 760px;
+  margin: 30px auto;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: var(--shadow);
+}
+
+.notice {
+  background: #fff7e6;
+  border: 1px solid #ffe2b5;
+  color: #8a5b05;
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin: 14px 0;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #f3f5fb;
+  border: 1px solid #e0e7f3;
+  color: #22304f;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+ul.hints {
+  margin: 8px 0 0 18px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+footer {
+  margin-top: 28px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
